@@ -5,8 +5,28 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from math import sin, cos, atan2, sqrt, acos, pi, hypot
 import numpy as np
 from utils.angle import angle_mod, rot_mat_2d
+from classes import Point, Vector, Path
 
-show_animation = True
+
+def plan_path(path: Path, curvature,
+                     step_size=0.1, selected_types=None):
+    path_result = Path()
+    for i in range(len(path)):
+        start_direction = path[i].direction
+        if i < len(path) - 1:
+            end_direction = path[i + 1].direction
+        else:
+            end_direction = start_direction
+
+        path_two_points, path_yaw, mode, lengths = plan_dubins_path(path[i].start_x(),
+                                                                    path[i].start_y(),
+                                                                    start_direction,
+                                                                    path[i].end_x(),
+                                                                    path[i].end_y(),
+                                                                    end_direction,
+                                                                    curvature)
+        path_result.extend(path_two_points)
+    return path_result
 
 
 def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
@@ -69,6 +89,7 @@ def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
     >>> plt.show()
     .. image:: dubins_path.jpg
     """
+
     if selected_types is None:
         planning_funcs = _PATH_TYPE_MAP.values()
     else:
@@ -90,9 +111,15 @@ def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
     converted_xy = np.stack([lp_x, lp_y]).T @ rot
     x_list = converted_xy[:, 0] + s_x
     y_list = converted_xy[:, 1] + s_y
+
+    points = []
+    for i in range(len(x_list)):
+        points.append(Point(x_list[i], y_list[i]))
+
+
     yaw_list = angle_mod(np.array(lp_yaw) + s_yaw)
 
-    return x_list, y_list, yaw_list, modes, lengths
+    return points, yaw_list, modes, lengths
 
 
 def _mod2pi(theta):
