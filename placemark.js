@@ -1,9 +1,12 @@
-ymaps.ready(init);
+ymaps.ready(['AnimatedLine']).then(init);
 
 var stopBtn = document.getElementById('stop');
 var startBtn = document.getElementById('start');
 var goBtn = document.getElementById('go');
 var testBtn = document.getElementById('test');
+
+var nameUAV = document.getElementById('nameUAV');
+var nameROUTE = document.getElementById('nameROUTE');
 
 function init() {
     var myPolyline;
@@ -13,7 +16,7 @@ function init() {
         type: 'yandex#satellite',
         controls: ["zoomControl"],
     });
-    myMap.behaviors.disable(['rightMouseButtonMagnifier','scrollZoom','']);
+    myMap.behaviors.disable(['rightMouseButtonMagnifier', 'scrollZoom']);
 
     startBtn.onclick = function () {
         myPolyline = new ymaps.Polyline([], {}, {
@@ -39,10 +42,33 @@ function init() {
     stopBtn.onclick = function () {
         myPolyline.editor.stopDrawing();
     };
+
     goBtn.onclick = function () {
-        console.log(myPolyline.geometry.getCoordinates());
+        var dict = {
+            uav_id: nameUAV.value,
+            route_name: nameUAV.value,
+            route: myPolyline.geometry.getCoordinates()
+        };
+
+        console.log(JSON.stringify(dict));
+        myPolyline.editor.stopEditing();
+
     };
-    goBtn.onclick = function () {
-        console.log(myPolyline.geometry.getCoordinates());
+
+    testBtn.onclick = function () {
+        var firstAnimatedLine = new ymaps.AnimatedLine(myPolyline.geometry.getCoordinates(), {}, {
+            strokeColor: random_rgba(),
+            strokeWidth: 5,
+            animationTime: 10000
+        });
+        myMap.geoObjects.add(firstAnimatedLine);
+        firstAnimatedLine.animate().then(function () {
+            console.log('Маршрут построен');
+        })
     };
+
+    function random_rgba() {
+        var o = Math.round, r = Math.random, s = 255;
+        return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+    }
 }
