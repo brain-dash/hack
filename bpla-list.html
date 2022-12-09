@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script defer src="js/button.js"></script>
+    <script defer src="js/prev.js"></script>
+    <script defer src="js/account.js"></script>
+    <script defer src="js/main.js"></script>
+
+    <script defer src="js/bootstrap.bundle.min.js"></script>
+    <title>Управление БПЛА</title>
+</head>
+<body>
+    <header>
+        <bpla-prev></bpla-prev>
+        <bpla-account></bpla-account>
+    </header>
+    <nav class="navbar bg-light nav-container">
+        <a class="navbar-brand" href="#">Список БПЛА</a>
+        <a class="navbar-brand" href="#">Список маршрутов</a>
+        <a class="navbar-brand" href="#">История уведомлений</a>
+        <a class="navbar-brand nav-exit" href="#">
+            <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_19_43)">
+                <path d="M2.16777 10.0875H12.4554C12.7837 10.0875 13.0491 9.82152 13.0491 9.49377C13.0491 9.16602 12.7837 8.90002 12.4554 8.90002H2.20488L4.35277 6.75212C4.58463 6.52027 4.58463 6.14442 4.35277 5.91256C4.12091 5.6807 3.74507 5.6807 3.51321 5.91256L0.00622559 9.51217L3.51321 13.1118C3.62929 13.2279 3.78099 13.2857 3.93299 13.2857C4.08499 13.2857 4.23669 13.2279 4.35277 13.1118C4.58463 12.8799 4.58463 12.5041 4.35277 12.2722L2.16777 10.0875ZM17.8063 0H7.71249C7.05639 0 6.52499 0.531703 6.52499 1.1875V6.53125H7.72021V1.91158C7.72021 1.51495 8.04202 1.19314 8.43864 1.19314H17.0614C17.4583 1.19314 17.7798 1.51495 17.7798 1.91158L17.7985 17.0947C17.7985 17.4913 17.477 17.8131 17.0801 17.8131H8.43896C8.04234 17.8131 7.72052 17.4913 7.72052 17.0947V12.4492L6.5253 12.4506V17.8125C6.5253 18.4683 7.05671 19 7.7128 19H17.8063C18.4624 19 18.9941 18.4683 18.9941 17.8125V1.1875C18.9938 0.531703 18.4621 0 17.8063 0H17.8063Z" fill="black"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_19_43">
+                <rect width="19" height="19" fill="white"/>
+                </clipPath>
+                </defs>
+            </svg>
+            <p>Выйти из системы</p>
+            </a>
+    </nav>
+    <bpla-button id="init" text="Начать"></bpla-button>
+</body>
+</html>
