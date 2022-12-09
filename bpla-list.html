@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/main.css">
 
     <script defer src="js/add-bpla.js"></script>
+    <script defer src="js/table-el-bpla.js"></script>
     <script defer src="js/prev.js"></script>
     <script defer src="js/account.js"></script>
     <script defer src="js/main.js"></script>
@@ -22,6 +23,11 @@
         <bpla-account></bpla-account>
     </header>
     <h1> Используемые БПЛА </h1>
-    <bpla-add-bpla></bpla-button>
+
+    <div class="bpla-list-container">
+        <bpla-table-bpla status="1" name="БПЛА №1"> </bpla-table-bpla>
+        <bpla-table-bpla status="2" name="БПЛА №2"> </bpla-table-bpla>
+    </div>
+    <bpla-add-bpla></bpla-add-bpla>
 </body>
 </html>
