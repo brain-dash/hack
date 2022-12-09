@@ -1,4 +1,4 @@
 ( ()=>{
     if (document.getElementById("init"))
-        document.getElementById("init").onclick = "1"
+        document.getElementById("init").onclick = ()=>window.location.href = 'select.html';
 })()

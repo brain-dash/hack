@@ -22,7 +22,7 @@ class Button extends HTMLElement {
     //   return this.getAttribute('onclick')
     }
     set onclick(value){
-      this.setAttribute('onclick', ()=>{console.log(1)})
+      this.addEventListener('click', value)
     }
 
   
@@ -33,7 +33,9 @@ class Button extends HTMLElement {
       return /*css*/`<style> 
         :host{
           width: 80%;
-          height: 32px;
+          display:flex;
+          justify-content: center;
+          align-items: center;
         }
         button{
           display: flex;
@@ -41,7 +43,6 @@ class Button extends HTMLElement {
           justify-content: center;
           align-items: center;
 
-          position: absolute;
           width: 80%;
           height: 32px;
 
