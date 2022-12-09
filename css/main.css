@@ -31,6 +31,14 @@ header{
 .header-secondary{
     justify-content: space-between;
 }
+h1{
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+    width: 80%;
+    height: 2rem;;
+    border-bottom:1px solid white;
+}
 .nav-container{
     display: flex;
     flex-direction: column;
@@ -76,13 +84,15 @@ header{
 .navbar-brand:hover svg path{
     fill: white;
 }
-h1{
-    font-size: 16px;
-    line-height: 19px;
-    color: #FFFFFF;
+
+/*****************/
+.bpla-list-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
     width: 80%;
-    height: 2rem;;
-    border-bottom:1px solid white;
+    flex-grow: 1;
 }
 @media screen and (min-width: 650px) {
     body{
