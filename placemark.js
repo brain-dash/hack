@@ -1,16 +1,19 @@
 ymaps.ready(['AnimatedLine']).then(init);
 
-var stopBtn = document.getElementById('stop');
-var startBtn = document.getElementById('start');
-var goBtn = document.getElementById('go');
-var testBtn = document.getElementById('test');
+let stopBtn = document.getElementById('stop');
+let startBtn = document.getElementById('start');
+let goBtn = document.getElementById('go');
+let testBtn = document.getElementById('test');
 
-var nameUAV = document.getElementById('nameUAV');
-var nameROUTE = document.getElementById('nameROUTE');
+let nameUAV = document.getElementById('nameUAV');
+let nameROUTE = document.getElementById('nameROUTE');
+let speadUAV = document.getElementById('spead');
+let circlePoints = {};
+let lastDragCoord;
 
 function init() {
-    var myPolyline;
-    var myMap = new ymaps.Map('map', {
+    let myPolyline;
+    let myMap = new ymaps.Map('map', {
         center: [55.76, 37.64], // Москва
         zoom: 14,
         type: 'yandex#satellite',
@@ -20,20 +23,63 @@ function init() {
 
     startBtn.onclick = function () {
         myPolyline = new ymaps.Polyline([], {}, {
-            strokeColor: "rgba(255,0,0,0.7)",
-            strokeWidth: 4,
-            // Добавляем в контекстное меню новый пункт, позволяющий удалить ломаную.
-            editorMenuManager: function (items) {
-                items.push({
-                    title: "Удалить линию",
-                    onClick: function () {
-                        myMap.geoObjects.remove(myPolyline);
-                    }
-                });
-                return items;
+            strokeColor: "#ffc107",
+            strokeWidth: 4
+        });
+
+        myPolyline.editor.events.add('vertexdragend', function (e) {
+            if (Object.keys(circlePoints).includes(lastDragCoord.join())) {
+                let newCoord = e.get('vertexModel').geometry.getCoordinates();
+                circlePoints[lastDragCoord][1].geometry.setCoordinates(newCoord);
+                circlePoints[newCoord] = circlePoints[lastDragCoord];
+                delete circlePoints[lastDragCoord];
             }
         });
 
+        myPolyline.editor.events.add('beforevertexdragstart', function (e) {
+            lastDragCoord = e.get('vertexModel').geometry.getCoordinates();
+        });
+
+        myPolyline.editor.options.set('dblClickHandler', function (e) {
+            if (!myMap.balloon.isOpen()) {
+                let coords = e.geometry.getCoordinates();
+                myMap.balloon.open(coords, {
+                    contentHeader: 'Задать',
+                    contentBody: `Кол-во кругов <input id="circle" type="text" value="${Object.keys(circlePoints).includes(coords.join()) ? circlePoints[coords][0] : 1}">`,
+                    contentFooter: '<button id="save">Сохранить</button><button id="del">Удалить</button>'
+                });
+                myMap.balloon.events.add('open', function () {
+                    let saveBtn = document.getElementById('save');
+                    let delBtn = document.getElementById('del');
+                    let circle = document.getElementById('circle');
+                    saveBtn.onclick = function () {
+                        if (!Object.keys(circlePoints).includes(coords.join())) {
+                            let p = new ymaps.Placemark(coords, {}, {
+                                preset: 'islands#circleIcon',
+                                iconColor: "#ffc107"
+                            });
+                            myMap.geoObjects.add(p);
+                            circlePoints[coords] = [circle.value, p];
+                        }
+                        else {
+                            let tmp = circlePoints[coords];
+                            circlePoints[coords] = [circle.value, tmp[1]];
+                        }
+                    };
+                    delBtn.onclick = function () {
+                        if (Object.keys(circlePoints).includes(coords.join())) {
+                            myMap.geoObjects.remove(circlePoints[coords][1]);
+                            delete circlePoints[coords];
+                        }
+                    };
+                });
+            }
+            else {
+                myMap.balloon.close();
+            }
+        });
+
+        myPolyline.options.set('editorUseAutoPanInDrawing', false);
         myPolyline.editor.startEditing();
         myMap.geoObjects.add(myPolyline);
         myPolyline.editor.startDrawing();
@@ -44,31 +90,29 @@ function init() {
     };
 
     goBtn.onclick = function () {
-        var dict = {
+        let dict = {
             uav_id: nameUAV.value,
             route_name: nameUAV.value,
             route: myPolyline.geometry.getCoordinates()
         };
-
         console.log(JSON.stringify(dict));
         myPolyline.editor.stopEditing();
-
     };
 
     testBtn.onclick = function () {
-        var firstAnimatedLine = new ymaps.AnimatedLine(myPolyline.geometry.getCoordinates(), {}, {
-            strokeColor: random_rgba(),
+        let distance = myPolyline.geometry.getDistance();
+        let spead = speadUAV.value;
+        let flightTime = distance / spead;
+        console.log(`Расчетное время в пути ${flightTime} секунд`);
+
+        let firstAnimatedLine = new ymaps.AnimatedLine(myPolyline.geometry.getCoordinates(), {}, {
+            strokeColor: "#198754",
             strokeWidth: 5,
-            animationTime: 10000
+            animationTime: flightTime * 1000
         });
         myMap.geoObjects.add(firstAnimatedLine);
         firstAnimatedLine.animate().then(function () {
-            console.log('Маршрут построен');
+            console.log('Маршрут пройден');
         })
     };
-
-    function random_rgba() {
-        var o = Math.round, r = Math.random, s = 255;
-        return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
-    }
 }

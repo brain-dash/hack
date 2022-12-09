@@ -9,15 +9,15 @@ ymaps.modules.define('AnimatedLine', [
     /**
      * Создает экземпляр анимированной линии.
      * @class AnimatedLine. Представляет собой геообъект с геометрией geometry.LineString.
-     * @param {Boolean} [options.animationTime = 4000] Длительность анимации.
+     * @param {Boolean} [options.animationTime ] Длительность анимации.
      **/
     function AnimatedLine(geometry, properties, options) {
         AnimatedLine.superclass.constructor.call(this, geometry, properties, options);
-        this._loopTime = 50;
-        this._animationTime = this.options.get('animationTime', 4000);
+        this._loopTime = 25;
+        this._animationTime = this.options.get('animationTime');
         // Вычислим длину переданной линии.
-        var distance = 0;
-        var previousElem = geometry[0];
+        let distance = 0;
+        let previousElem = geometry[0];
         this.geometry.getCoordinates().forEach(function (elem) {
             distance += getDistance(elem, previousElem);
             previousElem = elem;
@@ -30,12 +30,12 @@ ymaps.modules.define('AnimatedLine', [
     defineClass(AnimatedLine, Polyline, {
         // Анимировать линию.
         start: function () {
-            var value = 0;
-            var coords = this._smoothCoords;
-            var line = this;
-            var loopTime = this._loopTime;
-            var parentMap = this.getParent().getMap();
-            var p = new ymaps.Placemark([], {}, {
+            let value = 0;
+            let coords = this._smoothCoords;
+            let line = this;
+            let loopTime = this._loopTime;
+            let parentMap = this.getParent().getMap();
+            let p = new ymaps.Placemark([], {}, {
                 iconLayout: 'default#image',
                 iconImageHref: 'uav.svg',
                 iconImageSize: [30, 30],
@@ -43,7 +43,7 @@ ymaps.modules.define('AnimatedLine', [
             });
             parentMap.geoObjects.add(p);
 
-            // Будем добавлять по одной точке каждые 50 мс.
+            // Будем добавлять по одной точке каждые 25 мс.
             function loop(value, currentTime, previousTime) {
                 if (value < coords.length) {
                     if (!currentTime || (currentTime - previousTime) > loopTime) {
@@ -73,7 +73,7 @@ ymaps.modules.define('AnimatedLine', [
         animate: function () {
             this.reset();
             this.start();
-            var deferred = vow.defer();
+            let deferred = vow.defer();
             this.events.once('animationfinished', function () {
                 deferred.resolve();
             });
@@ -83,13 +83,13 @@ ymaps.modules.define('AnimatedLine', [
     });
     // Функция генерации частых координат по заданной линии.
     function generateSmoothCoords(coords, interval) {
-        var smoothCoords = [];
+        let smoothCoords = [];
         smoothCoords.push(coords[0]);
-        for (var i = 1; i < coords.length; i++) {
-            var difference = [coords[i][0] - coords[i - 1][0], coords[i][1] - coords[i - 1][1]];
-            var maxAmount = Math.max(Math.abs(difference[0] / interval), Math.abs(difference[1] / interval));
-            var minDifference = [difference[0] / maxAmount, difference[1] / maxAmount];
-            var lastCoord = coords[i - 1];
+        for (let i = 1; i < coords.length; i++) {
+            let difference = [coords[i][0] - coords[i - 1][0], coords[i][1] - coords[i - 1][1]];
+            let maxAmount = Math.max(Math.abs(difference[0] / interval), Math.abs(difference[1] / interval));
+            let minDifference = [difference[0] / maxAmount, difference[1] / maxAmount];
+            let lastCoord = coords[i - 1];
             while (maxAmount > 1) {
                 lastCoord = [lastCoord[0] + minDifference[0], lastCoord[1] + minDifference[1]];
                 smoothCoords.push(lastCoord);
