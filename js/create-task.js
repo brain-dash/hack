@@ -8,7 +8,7 @@ class CreateTask extends HTMLElement {
     connectedCallback() {
       this.querySelector("#createTaskFormBpla").addEventListener('submit', (e)=>this.handlerSubmit1(e));
       this.querySelector("#createTaskForm").addEventListener('submit', (e)=>this.handlerSubmit(e));
-      this.querySelector("#createTaskFormSumbit").addEventListener('submit', (e)=>this.handlerSubmit(e));
+      this.querySelector("#createTaskSubmit").addEventListener('submit', (e)=>this.handlerSubmit3(e));
     }
 
     render(){
