@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script defer src="js/prev.js"></script>
+    <script defer src="js/account.js"></script>
+    <script defer src="js/main.js"></script>
+    <script defer src="js/button.js"></script>
+
+    <script defer src="js/characteristics.js"></script>
+    <script defer src="js/view.js"></script>
+    <script defer src="js/task-pair.js"></script>
+
+
+    <script defer src="js/bootstrap.bundle.min.js"></script>
+    <title>Управление БПЛА</title>
+</head>
+<body>
+    <header class="header-secondary">
+        <bpla-task-pair>
+            <p slot="name">БПЛА 1</p>
+            <p slot="road">Маршрут 1</p>
+        </bpla-task-pair>
+        <bpla-account></bpla-account>
+    </header>
+    <bpla-view>
+        <div slot="map">
+            Карта
+        </div>
+        <div slot="video">
+            Видео
+        </div>
+    </bpla-view>
+    <bpla-chars>
+        <div slot="left"><p>Запас хода</p> <p>2ч:2мин</p></div>
+        <div slot="total"><p>Ожидаемое время в пути</p> <p>20 мин</p></div>
+        <div slot="fromstart"><p>Время в пути</p> <p>11 мин</p></div>
+    </bpla-chars>
+    <bpla-button text="Закончить задачу" id="btn-finish"></bpla-button>
+    
+</body>
+</html>
