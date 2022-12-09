@@ -5,24 +5,30 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from math import sin, cos, atan2, sqrt, acos, pi, hypot
 import numpy as np
 from utils.angle import angle_mod, rot_mat_2d
-from classes import Point, Vector, Path
+from path.point import Point
+from path.vector import Vector
+from path.path import Path
 
 
-def plan_path(path: Path, curvature,
-                     step_size=0.1, selected_types=None):
+def plan_path(path: Path, curvature,step_size=0.1, selected_types=None):
+
+    # print(path.get_angles())
     path_result = Path()
+    directions = path.get_angles()
+
     for i in range(len(path)):
-        start_direction = path[i].direction
+        directions = path.get_angles()
+        start_direction = directions[i]
         if i < len(path) - 1:
-            end_direction = path[i + 1].direction
+            end_direction = directions[i + 1]
         else:
             end_direction = start_direction
 
-        path_two_points, path_yaw, mode, lengths = plan_dubins_path(path[i].start_x(),
-                                                                    path[i].start_y(),
+        path_two_points, path_yaw, mode, lengths = plan_dubins_path(path[i].start.x,
+                                                                    path[i].start.y,
                                                                     start_direction,
-                                                                    path[i].end_x(),
-                                                                    path[i].end_y(),
+                                                                    path[i].end.x,
+                                                                    path[i].end.y,
                                                                     end_direction,
                                                                     curvature)
         path_result.extend(path_two_points)
@@ -32,7 +38,7 @@ def plan_path(path: Path, curvature,
 def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
                      step_size=0.1, selected_types=None):
     """
-    Plan dubins path
+    Plan pathfinding path
     Parameters
     ----------
     s_x : float
@@ -70,7 +76,7 @@ def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
         arrow_length list of the path segments.
     Examples
     --------
-    You can generate a dubins path.
+    You can generate a pathfinding path.
     >>> start_x = 1.0  # [m]
     >>> start_y = 1.0  # [m]
     >>> start_yaw = np.deg2rad(45.0)  # [rad]
@@ -114,7 +120,7 @@ def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
 
     points = []
     for i in range(len(x_list)):
-        points.append(Point(x_list[i], y_list[i]))
+        points.append(Point(x=x_list[i], y=y_list[i]))
 
 
     yaw_list = angle_mod(np.array(lp_yaw) + s_yaw)
