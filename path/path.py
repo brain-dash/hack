@@ -88,12 +88,11 @@ class Path:
         from pathfinding.tsp import find_shortest_path
         permutation = find_shortest_path(path)
         self._points = Path.create_permutation(path, permutation)
-        self.create_vectors()
 
-    def optimize_wetzel(self, path: Path, n=3):
+    def optimize_wetzel(self, path: Path, radius, n):
         from path.algorithms import find_closest_points
         from pathfinding.wetzel import welzl
-        points_groups = find_closest_points(path, n)
+        points_groups = find_closest_points(path, radius, n)
 
         new_points: list[Point] = []
         for group in points_groups:
@@ -102,13 +101,11 @@ class Path:
                                     y=circle.center.y))
 
         self._points = new_points
+
+    def optimize(self, path: Path, radius=0, n=3):
+        self.optimize_wetzel(path, radius, n)
+        self.optimize_tsp(path)
         self.create_vectors()
-
-
-
-
-
-
 
     @staticmethod
     def create_permutation(path: Path, permutation: list):

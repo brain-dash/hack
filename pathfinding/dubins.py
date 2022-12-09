@@ -15,9 +15,7 @@ def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
     # print(path.get_angles())
     path_result = Path()
     directions = path.get_angles()
-
-    # curvature_list = [5.0, 2.0, 1.0, 3.0, 3.0, 5.0]
-
+    # sel_types = [['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL']]
     for i in range(len(path)):
         directions = path.get_angles()
         start_direction = directions[i]
@@ -26,6 +24,8 @@ def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
         else:
             end_direction = start_direction
 
+        # curvature_list = [3., 3., 3., 3., 3., 3., 3.]
+
         path_two_points, path_yaw, mode, lengths = plan_dubins_path(path[i].start.x,
                                                                     path[i].start.y,
                                                                     start_direction,
@@ -33,6 +33,8 @@ def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
                                                                     path[i].end.y,
                                                                     end_direction,
                                                                     curvature)
+                                                                    # selected_types=sel_types[i])
+        print(mode)
         path_result.extend(path_two_points)
     return path_result
 
@@ -123,7 +125,6 @@ def plan_dubins_path(s_x, s_y, s_yaw, g_x, g_y, g_yaw, curvature,
     points = []
     for i in range(len(x_list)):
         points.append(Point(x=x_list[i], y=y_list[i]))
-
 
     yaw_list = angle_mod(np.array(lp_yaw) + s_yaw)
 
@@ -217,7 +218,6 @@ def _LRL(alpha, beta, d):
     d1 = _mod2pi(-alpha - atan2(cos_a - cos_b, d + sin_a - sin_b) + d2 / 2.0)
     d3 = _mod2pi(_mod2pi(beta) - alpha - d1 + _mod2pi(d2))
     return d1, d2, d3, mode
-
 
 _PATH_TYPE_MAP = {"LSL": _LSL, "RSR": _RSR, "LSR": _LSR, "RSL": _RSL,
                   "RLR": _RLR, "LRL": _LRL, }

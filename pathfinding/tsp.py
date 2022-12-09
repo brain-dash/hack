@@ -9,8 +9,9 @@ from path.path import Path
 def find_shortest_path(path: Path):
     distance_m = distance_matrix(path)
     distance_arr = np.array(distance_m)
-    distance_arr[:, 0] = 0 #open path tsp
+    # distance_arr[:, 0] = 0 #open path tsp
 
+    # print(distance_arr)
     permutation, distance = solve_tsp_dynamic_programming(distance_arr)
     return permutation
 

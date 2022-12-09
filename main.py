@@ -8,6 +8,7 @@ from pathfinding.wetzel import *
 import numpy as np
 from path.point import Point
 from path.path import Path
+from utils.plot import plot_arrow, plot_curvature
 
 show_animation = True
 def vector_info(vector):
@@ -58,14 +59,6 @@ def main():
     print("Dubins path planner sample start!!")
     import matplotlib.pyplot as plt
 
-    # test_coords = [[55.74846080864999, 37.59981391186994], [55.76346531164121, 37.60899779553693],
-    #  [55.76206191036014, 37.64753577466289], [55.747202102968316, 37.64787909741681],
-    #  [55.75310798404602, 37.62573477978985], [55.764723490354115, 37.63139960522931],
-    #  [55.76085204095608, 37.59268996472638], [55.745943356504235, 37.6168083881883],
-    #  [55.745362382842515, 37.6519131397752], [55.737324689166485, 37.63225791211407],
-    #  [55.738583714852815, 37.6079678272752], [55.74415199314427, 37.593805763676585],
-    #  [55.75291436283772, 37.590200874760555], [55.7443456580299, 37.57835623975079],
-    #  [55.73853529154216, 37.58839843030256]]
     test_coords = [[55.763290828800116, 37.5909048461914],
                    [55.769484573498744, 37.59536804199218],
                    [55.77180697300689, 37.601547851562486],
@@ -99,43 +92,56 @@ def main():
                    [55.757465202629234, 37.59016271376907],
                    [55.76598262463785, 37.58123632216752]]
 
+    for i in range(len(test_coords)):
+        for j in range(len(test_coords[0])):
+            test_coords[i][j] = 10 * test_coords[i][j]
+
     # path_test = Path.from_list(coords=test_coords)
 
-    curvature = 600.0
+    curvature = 8.
 
     points = [[1., 1.],
               [3., 3.],
-              [1., 5.],
-              [5., 6.],
-              [9., 7.],
+              [5., 1.],
               [7., 3.],
-              [3., 2.]]
+              [4., 3.],
+              [2., 7.],
+              [1., 3.],
+              [-1., 1.],
+              [3., 4.],
+              [7., 2.],
+              [4., 1.],
+              [5., 7.],
+              [4., 10.],
+              [6., 3.],
+              [3., 9.],
+              [5., 9.]]
 
+    figure, axes = plt.subplots()
 
-
-    path_initial = Path.from_list(coords=test_coords)
+    path_initial = Path.from_list(coords=points)
+    radius = 1.5
+    plt.scatter(path_initial.x(), path_initial.y(), marker='x', color='green')
     # print(path_initial.get_angles())
-    path_initial.optimize_wetzel(path_initial, n=2 )
-    path_initial.optimize_tsp(path_initial)
-
-
-    # vector_info(path_initial[4])
-
+    path_initial.optimize(path_initial, radius=radius, n=2)
     path_final = plan_path(path_initial, curvature)
 
 
-
-
-
     if show_animation:
-        plt.plot(path_initial.x(), path_initial.y())
+        plt.plot(path_initial.x(), path_initial.y(), linewidth=1)
         plt.plot(path_final.x(), path_final.y())
         plt.scatter(path_initial.x(), path_initial.y(), color='red')
 
-        # for i in range(len(path_initial)):
+        for i in range(len(path_initial)):
+            circle = plt.Circle((path_initial[i].start.x, path_initial[i].start.y),
+                                radius, fill=False, linestyle='dashed')
+            axes.set_aspect(1)
+            axes.add_artist(circle)
             # print(path_initial[i].start.x, " ", path_initial[i].start.y, " ", path_initial[i].direction)
-            # plot_arrow(path_initial[i].start.x, path_initial[i].start.y, path_initial[i].direction)
-        # plot_arrow(path_initial.finish.x, path_initial.finish.y, path_initial.end_vec().direction)
+            plot_arrow(path_initial[i].start.x, path_initial[i].start.y, path_initial[i].direction,
+                       arrow_length=1.0, head_width=0.1)
+        plot_arrow(path_initial.finish.x, path_initial.finish.y, path_initial.end_vec().direction,
+                   arrow_length=1.0, head_width=0.1)
         plt.grid(True)
         plt.axis("equal")
         plt.show()
