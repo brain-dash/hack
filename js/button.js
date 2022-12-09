@@ -32,7 +32,7 @@ class Button extends HTMLElement {
     css(){
       return /*css*/`<style> 
         :host{
-          width: 250px;
+          width: 80%;
           height: 32px;
         }
         button{
@@ -42,7 +42,7 @@ class Button extends HTMLElement {
           align-items: center;
 
           position: absolute;
-          width: 250px;
+          width: 80%;
           height: 32px;
 
           background: #C9F2FF;
@@ -52,10 +52,25 @@ class Button extends HTMLElement {
           font-family: 'Montserrat';
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 16px;
           line-height: 16px;
           color: black;
+          margin:20px 0;
+
+          border: 1px solid #B0D9FF;
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          transition: all 0.4s linear;
+          cursor: pointer;
         }
+        button:hover{
+          color: black;
+          background: #e3f2f7;
+        }
+        button:active{
+          background: #61777e;
+          color: white;
+        }
+       
  
     </style>`
     }
