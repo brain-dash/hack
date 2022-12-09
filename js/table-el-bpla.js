@@ -4,6 +4,7 @@ class TableBpla extends HTMLElement {
       this.innerHTML = this.render();
       this.nameEl = this.querySelector(".table-bpla-el-name");
       this.headerEl = this.querySelector(".header-editable");
+      this.moreEl = this.querySelector(".more");
     }
   
     static get observedAttributes() { return ['name','status']; }
@@ -21,6 +22,9 @@ class TableBpla extends HTMLElement {
         const modalTitle = exampleModal.querySelector('.modal-title')
         modalTitle.value = bplaId;
       })
+
+
+      this.querySelector(".table-bpla-el").addEventListener("click",(e) =>this.openView(e));
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -42,7 +46,18 @@ class TableBpla extends HTMLElement {
         }
       }
     }
-  
+    
+    /**
+     * Переход на новую вкладку, если это не нажатие на кнопку с открытием модального окна
+     * @param {event} e 
+     */
+    openView = (e) => {
+      if (!e.path.find(element => element == this.moreEl))
+        console.log(e.path.find(element => element == this.moreEl))
+
+      // else
+      //   e.preventDefault
+    }
     render(){
       return `${this.css()}${this.html()} `;
     }
@@ -64,6 +79,7 @@ class TableBpla extends HTMLElement {
           align-items: center;
           height:2rem;
           width: 100%;
+          cursor:pointer;
         }
         .table-bpla-el-name{
           margin:0;
