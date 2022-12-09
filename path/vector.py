@@ -12,15 +12,15 @@ class Vector:
         self.direction = self.calc_direction()
 
     def calc_direction(self):
-
-        if self.y > 0:
+        if self.y >= 0:
             if self.x == 0:
                 return np.deg2rad(90)
             direction = math.degrees(math.atan(self.y / self.x))
             if self.x > 0:
                 return np.deg2rad(direction)
             else:
-                return np.deg2rad(180 - direction)
+                # return np.deg2rad(direction)
+                return np.deg2rad(direction - 180)
         else:
             if self.x == 0:
                 return np.deg2rad(-90)
@@ -30,6 +30,21 @@ class Vector:
             else:
                 return np.deg2rad(180 + direction)
 
+    # def calc_direction(self):
+    #     if self.x != 0:
+    #         return np.deg2rad(90)
+    #     else:
+    #         angle = math.degrees(math.atan(self.y / self.x))
+    #         if self.y > 0:
+    #             if self.x > 0:
+    #                 return np.deg2rad(angle)
+    #             else:
+    #                 return np.deg2rad(180 - angle)
+    #         else:
+    #             if self.x > 0:
+    #                 return np.deg2rad(360 - angle)
+    #             else:
+    #                 return np.deg2rad(180 + angle)
     @property
     def start(self):
         return self._start_point

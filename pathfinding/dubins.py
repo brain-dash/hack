@@ -10,11 +10,13 @@ from path.vector import Vector
 from path.path import Path
 
 
-def plan_path(path: Path, curvature,step_size=0.1, selected_types=None):
+def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
 
     # print(path.get_angles())
     path_result = Path()
     directions = path.get_angles()
+
+    # curvature_list = [5.0, 2.0, 1.0, 3.0, 3.0, 5.0]
 
     for i in range(len(path)):
         directions = path.get_angles()

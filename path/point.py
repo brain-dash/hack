@@ -1,11 +1,9 @@
+
+from __future__ import annotations
+from math import sqrt
 class Point:
 
     def __init__(self, **kwargs):
-        if kwargs.get('id'):
-            self.id = kwargs.get('id')
-        else:
-            self.id = 0
-
         if kwargs.get('coords'):
             self._x, self._y = self.from_list(kwargs.get('coords'))
         else:
@@ -18,6 +16,10 @@ class Point:
             return None, None
         else:
             return coords[0], coords[1]
+
+    @staticmethod
+    def dist(p1: Point, p2: Point):
+        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2))
 
     def list(self):
         return [self._x, self._y]

@@ -3,6 +3,7 @@ import math
 import numpy as np
 from path.point import Point
 from path.vector import Vector
+from path.circle import Circle
 
 
 class Path:
@@ -83,13 +84,31 @@ class Path:
         path = Path(points)
         return path
 
-    def optimize_path(self, path: Path):
+    def optimize_tsp(self, path: Path):
         from pathfinding.tsp import find_shortest_path
         permutation = find_shortest_path(path)
         self._points = Path.create_permutation(path, permutation)
-        print(path.get_angles())
         self.create_vectors()
-        print(path.get_angles())
+
+    def optimize_wetzel(self, path: Path, n=3):
+        from path.algorithms import find_closest_points
+        from pathfinding.wetzel import welzl
+        points_groups = find_closest_points(path, n)
+
+        new_points: list[Point] = []
+        for group in points_groups:
+            circle: Circle = welzl(group)
+            new_points.append(Point(x=circle.center.x,
+                                    y=circle.center.y))
+
+        self._points = new_points
+        self.create_vectors()
+
+
+
+
+
+
 
     @staticmethod
     def create_permutation(path: Path, permutation: list):
@@ -97,12 +116,4 @@ class Path:
 
         for i in range(len(permutation)):
             points_optimized.append(path.points[permutation[i]])
-
-        for el in path.points:
-            print(el.x, end=", ")
-        print()
-        for el in points_optimized:
-            print(el.x, end=", ")
-        print()
-
         return points_optimized
