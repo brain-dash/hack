@@ -7,6 +7,7 @@ class View extends HTMLElement {
   
     connectedCallback() {
       this.shadowRoot.querySelector("button").addEventListener('click',()=>this.swap())
+ 
     }
 
     render(){
@@ -52,6 +53,9 @@ class View extends HTMLElement {
     }
     html(){
         return /*html*/`
+  
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+
         <button >
           <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_d_14_1274)">
@@ -74,6 +78,7 @@ class View extends HTMLElement {
           </svg>
           <p>Переключиться на вид с камеры</p>
         </button>
+
 
         <div>
           <slot class="map invisible" name="map"></slot>
