@@ -40,13 +40,25 @@ function init() {
             lastDragCoord = e.get('vertexModel').geometry.getCoordinates();
         });
 
+        myPolyline.geometry.events.add('change', function (e) {
+            let oldCoord = new Set(e.get('oldCoordinates'));
+            let newCoord = new Set(e.get('newCoordinates'));
+            if (newCoord.size < oldCoord.size) {
+                let diff = [...oldCoord].filter(x => !newCoord.has(x));
+                if (Object.keys(circlePoints).includes(diff.join())) {
+                    myMap.geoObjects.remove(circlePoints[diff][1]);
+                    delete circlePoints[diff];
+                }
+            }
+        });
+
         myPolyline.editor.options.set('dblClickHandler', function (e) {
             if (!myMap.balloon.isOpen()) {
                 let coords = e.geometry.getCoordinates();
                 myMap.balloon.open(coords, {
                     contentHeader: 'Задать',
                     contentBody: `Кол-во кругов <input id="circle" type="text" value="${Object.keys(circlePoints).includes(coords.join()) ? circlePoints[coords][0] : 1}">`,
-                    contentFooter: '<button id="save">Сохранить</button><button id="del">Удалить</button>'
+                    contentFooter: '<button id="save">Сохранить</button><button id="del">Удалить</button>',
                 });
                 myMap.balloon.events.add('open', function () {
                     let saveBtn = document.getElementById('save');
@@ -65,6 +77,7 @@ function init() {
                             let tmp = circlePoints[coords];
                             circlePoints[coords] = [circle.value, tmp[1]];
                         }
+                        myMap.balloon.close();
                     };
                     delBtn.onclick = function () {
                         if (Object.keys(circlePoints).includes(coords.join())) {
