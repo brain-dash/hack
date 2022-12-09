@@ -36,7 +36,6 @@ class Account extends HTMLElement {
           align-items:center;
           justify-content:center;
           color:white;
-          padding:20px
         } 
         p{
           padding:0 20px;
