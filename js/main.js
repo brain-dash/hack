@@ -1,3 +1,4 @@
 ( ()=>{
-    document.getElementById("init").onclick = "1"
+    if (document.getElementById("init"))
+        document.getElementById("init").onclick = "1"
 })()
