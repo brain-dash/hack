@@ -39,10 +39,11 @@
             <p>Выйти из системы</p>
         </a>
     </nav>
-    <bpla-button id="init" text="Начать"></bpla-button>
+    <bpla-button id="init" text="Начатwь">
+      <a href='{% url "select" %}'>Начать</a>
+    </bpla-button>
 
 <script>
-
 const requestURL = '/api/getUav'
 const xhr = new XMLHttpRequest()
 let data = 0

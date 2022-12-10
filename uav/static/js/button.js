@@ -37,7 +37,7 @@ class Button extends HTMLElement {
           justify-content: center;
           align-items: center;
         }
-        button{
+        div{
           display: flex;
           flex-direction: row;
           justify-content: center;
@@ -62,12 +62,22 @@ class Button extends HTMLElement {
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           transition: all 0.4s linear;
           cursor: pointer;
+          t
         }
-        button:hover{
+        ::slotted(a){
+          color:black !important;
+          text-decoration:none !important;
+          width:100%;
+          height:100%;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+        }
+        div:hover{
           color: black;
           background: #e3f2f7;
         }
-        button:active{
+        div:active{
           background: #61777e;
           color: white;
         }
@@ -77,7 +87,9 @@ class Button extends HTMLElement {
     }
     html(){
         return /*html*/`
-            <button></button>
+        <div>
+          <slot></slot>
+        </div>
         `
     }
   }

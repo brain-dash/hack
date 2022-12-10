@@ -20,11 +20,12 @@ from django.views.decorators.http import require_http_methods
 @login_required
 def apiGetUav(request):
     uavs = Uav.objects.all().select_related('status').values('name','status__status')
-    context = {}
+    context = []
     for uav in uavs:
-        context.update(
+        context.append(
             {
-                 uav['name'] : uav['status__status'],
+                 "name" : uav['name'],
+                 "status" : uav['status__status'],
             }
         )
     context = json.dumps(context, ensure_ascii=False)
@@ -42,6 +43,7 @@ def apiGetSpecifiedRoute(request):
     context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
+@csrf_exempt
 @login_required
 def apiGetRoute(request):
     routes = Route.objects.all()
@@ -57,6 +59,7 @@ def apiGetRoute(request):
     context = json.dumps(context, ensure_ascii=False, indent=4, sort_keys=True, default=str)
     return HttpResponse(context, content_type="application/json")
 
+@csrf_exempt
 @login_required
 def apiGetProblem(request):
 
@@ -68,11 +71,11 @@ def apiGetProblem(request):
     context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
-
+@csrf_exempt
 @login_required
-def apiGetСharacteristics(request):
-    #data = json.loads(request.body)["data"]
-    data = {'name' : 'Тест1' }
+def apiGetCharacteristics(request):
+    data = json.loads(request.body)
+    #data = {'name' : 'Тест1' }
     uav_route_name = data['name']
     uav = Uav.objects.filter(name = uav_route_name)[0]
     context = {
@@ -84,8 +87,9 @@ def apiGetСharacteristics(request):
     context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
+@csrf_exempt
 @login_required
-def apiChangeСharacteristics(request):
+def apiChangeCharacteristics(request):
     #data = json.loads(request.body)["data"]
     data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
     uav = Uav.objects.filter(name = data['name'])[0]
@@ -97,6 +101,7 @@ def apiChangeСharacteristics(request):
     result = True
     return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
+@csrf_exempt
 @login_required
 def apiCreateProblem(request):
     #data = json.loads(request.body)["data"]
@@ -113,7 +118,7 @@ def apiCreateProblem(request):
     result = True
     return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
-
+@csrf_exempt
 @login_required
 def apiSaveRoute(request):
 
@@ -136,7 +141,7 @@ def apiSaveRoute(request):
     result = True
     return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
-
+@csrf_exempt
 @login_required
 def apiCreateVua(request):
     #data = json.loads(request.body)["data"]
@@ -226,5 +231,9 @@ def listRoute(request):
     return render(request, 'list-route.html')
 
 def listTasks(request):
+    data = {"header": "Hello Django", "message": "Welcome to Python"}
+    # return render(request, 'tasks.html',context=data)
     return render(request, 'tasks.html')
      
+def select(request):
+    return render(request, 'select.html')
