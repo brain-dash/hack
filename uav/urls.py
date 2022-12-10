@@ -30,6 +30,8 @@ urlpatterns = [
     path('list-route', views.listRoute, name='list-route'),
     path('listTasks', views.listTasks, name='listTasks'),
     path('select', views.select, name='select'),
+    path('route', views.route, name='route'),
+    path('view', views.view, name='view'),
 
 #-------------------Api-----------------------------------------------------------#
     path('api/getSpecifiedRoute', views.apiGetSpecifiedRoute, name = 'apiGetSpecifiedRoute'),
@@ -39,6 +41,7 @@ urlpatterns = [
     path('api/changeCharacteristics', views.apiChangeCharacteristics, name = 'apiChangeCharacteristics'), 
     path('api/getUav', views.apiGetUav, name='apiGetUav'), 
     path('api/getRoute', views.apiGetRoute, name='apiGetRoute'),
-    path('api/saveRoute', views.apiSaveRoute,name = 'apiSaveRoute')
+    path('api/saveRoute', views.apiSaveRoute,name = 'apiSaveRoute'),
+    path('api/OptimizeRoute', views.apiOptimizeRoute, name='apiOptimizeRoute')
 ]
 

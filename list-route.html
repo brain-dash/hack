@@ -8,14 +8,11 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
 
-    <script defer src="js/add-bpla.js"></script>
-    <script defer src="js/table-el-bpla.js"></script>
+    <script defer src="js/add-route.js"></script>
+    <script defer src="js/table-el-route.js"></script>
     <script defer src="js/prev.js"></script>
     <script defer src="js/account.js"></script>
     <script defer src="js/main.js"></script>
-    <script defer src="js/button.js"></script>
-    <script defer src="js/create-task.js"></script>
-
 
     <script defer src="js/bootstrap.bundle.min.js"></script>
     <title>Управление БПЛА</title>
@@ -25,9 +22,12 @@
         <bpla-prev></bpla-prev>
         <bpla-account></bpla-account>
     </header>
-    <h1> Выберите БПЛА из списка или добавьте новый </h1>
-  
-    <bpla-create-task></bpla-create-task>
-    
+    <h1> Используемые БПЛА </h1>
+
+    <div class="bpla-list-container">
+        <bpla-table-route name="Маршрут 1"> </bpla-table-route>
+        <bpla-table-route name="Маршрут 2"> </bpla-table-route>
+    </div>
+    <bpla-add-route></bpla-add-route>
 </body>
 </html>

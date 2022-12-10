@@ -54,7 +54,7 @@ class View extends HTMLElement {
     html(){
         return /*html*/`
   
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
 
         <button >
           <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,3 +91,4 @@ class View extends HTMLElement {
 if (!customElements.get('bpla-view')) {
     customElements.define('bpla-view',View);
 }
+  
