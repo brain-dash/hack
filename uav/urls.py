@@ -28,6 +28,7 @@ urlpatterns = [
     path('logout', views.logout_user, name='logout'),
     path('listbpla', views.listUav, name='listbpla'),
     path('list-route', views.listRoute, name='list-route'),
+    path('listTasks', views.listTasks, name='listTasks'),
 
 #-------------------Api-----------------------------------------------------------#
     path('api/getSpecifiedRoute', views.apiGetSpecifiedRoute, name = 'apiGetSpecifiedRoute'),
