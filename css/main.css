@@ -108,6 +108,25 @@ button{
     width: 100%;
     justify-content: space-between;
 }
+/*********/
+.map{
+    flex-grow: 1;
+}
+.road-char{
+    width: 80%;
+    justify-content: space-between;
+}
+.road-text{
+    display: flex;
+}
+.road-text p{
+    padding-left: 10px;
+}
+.header-editable{
+    border:none;
+    cursor:pointer;
+    width: 80%;
+}
 @media screen and (min-width: 650px) {
     body{
         
