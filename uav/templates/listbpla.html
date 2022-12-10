@@ -21,14 +21,31 @@
 <body>
     <header class="header-secondary">
         <bpla-prev></bpla-prev>
-        <bpla-account></bpla-account>
+        <bpla-account><p>{{user}}</p></bpla-account>
     </header>
     <h1> Используемые БПЛА </h1>
-
     <div class="bpla-list-container">
-        <bpla-table-bpla status="1" name="БПЛА №1"> </bpla-table-bpla>
-        <bpla-table-bpla status="2" name="БПЛА №2"> </bpla-table-bpla>
     </div>
     <bpla-add-bpla></bpla-add-bpla>
+
+
+<script>
+    //console.log("/api/")
+    (async () =>{
+        let response = await fetch('/api/getUav');
+        let json = await response.json(); // прочитать тело ответа как текст
+        const container = document.querySelector(".bpla-list-container");
+        json.forEach(element => {
+            // let bpla = document.createElement('bpla-table-bpla');
+            const bpla = document.createElement("bpla-table-bpla");
+            bpla.setAttribute("status",element.status);
+            bpla.setAttribute("name",element.name);
+            container.appendChild(bpla)
+            
+        });
+    })()
+    
+</script>
 </body>
+
 </html>

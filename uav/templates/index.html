@@ -39,7 +39,37 @@
             <p>Выйти из системы</p>
         </a>
     </nav>
-    <bpla-button id="init" text="Начать"></bpla-button>
+    <bpla-button id="init" text="Начатwь">
+      <a href='{% url "select" %}'>Начать</a>
+    </bpla-button>
+
+<script>
+const requestURL = '/api/getUav'
+// const xhr = new XMLHttpRequest()
+// const data = {}
+
+// xhr.open('GET', requestURL)
+// xhr.responseType = 'json'
+// xhr.setRequestHeader('Content-Type', 'application/json')
+// xhr.onload = () => {
+//     data = xhr.response
+// }
+// xhr.send()
+
+
+
+async function getData(e) {
+    try {
+        const response = await fetch(e);
+        const data = await response.json();
+        console.log(data)
+    } catch(err) {
+        console.log('Error >>>', err)
+    }
+}
+getData(requestURL)
+
+</script>
 
 <script>
 
