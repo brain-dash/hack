@@ -33,5 +33,19 @@
         <bpla-table-route name="Маршрут 2"> </bpla-table-route>
     </div>
     <bpla-add-route></bpla-add-route>
+    <script>
+        (async () =>{
+        let response = await fetch('/api/getRoute');
+        let json = await response.json(); // прочитать тело ответа как текст
+        const container = document.querySelector(".bpla-list-container");
+        json.forEach(element => {
+            const route = document.createElement("bpla-table-route");
+            route.setAttribute("status",element.status);
+            route.setAttribute("name",element.name);
+            container.appendChild(route)
+            
+        });
+    })()
+    </script>
 </body>
 </html>

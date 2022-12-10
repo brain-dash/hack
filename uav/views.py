@@ -53,9 +53,9 @@ def apiGetSpecifiedRoute(request):
 @login_required
 def apiGetRoute(request):
     routes = Route.objects.all()
-    context = {}
+    context = []
     for route in routes:
-        context.update(
+        context.append(
             {
                 'id': route.id,
                 'points': route.points,
@@ -119,9 +119,9 @@ def apiChangeCharacteristics(request):
 @login_required
 def apiCreateProblem(request):
     #data = json.loads(request.body)["data"]
-    #data = {'name_vua' : 'Тест1', 'name_route' : 'asdasd'}
-    uav = Uav.objects.filter(name=data['name_vua'])[0]
-    route = Route.objects.filter(name=data['name_route'])[0]
+    data = request.POST
+    uav = Uav.objects.filter(name = data['name_vua'])[0]
+    route = Route.objects.filter(name = data['name_route'])[0]
 
     problem = Problem(
         name=f'{uav.id}' + ' ' + f'{route.id}',
