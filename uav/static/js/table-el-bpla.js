@@ -53,17 +53,20 @@ class TableBpla extends HTMLElement {
       const body = {
         'name' : this.getAttribute("name")
       } 
-
+      //body = JSON.stringify(body)
 
       let xhr = new XMLHttpRequest(); 
       let url = new URL('http://127.0.0.1:8000/api/getCharacteristics');
       url.searchParams.set('name', this.getAttribute("name"));
       
+
+      
       xhr.open('POST', url);
-      xhr.send([body]);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+      xhr.send(JSON.stringify(body));
       xhr.responseType = 'json'
       xhr.onload = () => {
-       //console.log(xhr.response);
+       console.log(xhr.response);
        this.shadowRoot.querySelector("#bpla-gforce").value = xhr.response.maximum_gforce;
        this.shadowRoot.querySelector("#bpla-velocity").value = xhr.response.velocity;
        this.shadowRoot.querySelector("#bpla-volume").value = xhr.response.volume;
