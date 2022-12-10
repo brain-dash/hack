@@ -23,9 +23,11 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('',views.startPage),
     path('app', views.app, name='app'),
-    path('register', views.RegisterFormView),
+    path('register', views.RegisterFormView, name = 'register'),
     path('login',views.login_user, name = 'login'),
     path('logout', views.logout_user, name='logout'),
+    path('listbpla', views.listUav, name='listbpla'),
+    path('list-route', views.listRoute, name='list-route'),
 
 #-------------------Api-----------------------------------------------------------#
     path('api/getSpecifiedRoute', views.apiGetSpecifiedRoute, name = 'apiGetSpecifiedRoute'),

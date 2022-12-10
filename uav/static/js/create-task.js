@@ -29,7 +29,7 @@ class CreateTask extends HTMLElement {
       const formData = new FormData(e.target);
       let formProps = Object.fromEntries(formData);
       Object.assign(this.taskObject,formProps)
-      this.querySelector("#createTaskLabel2").innerHTML =`Запустить ${this.taskObject?.bpla} по маршруту ${this.taskObject?.road} ?`
+      this.querySelector("#createTaskLabel2").innerHTML =`Запустить ${this.taskObject?.bpla} по маршруту ${this.taskObject?.route} ?`
       console.log(this.taskObject);
     }
     handlerSubmit3 = (e) =>{
@@ -96,16 +96,16 @@ class CreateTask extends HTMLElement {
                     <ul class="dropdown-menu">
                       <li>
                         <div class="form-check dropdown-item">
-                          <input class="form-check-input" type="radio" name="road" id="road1" value="Маршрут1">
-                          <label class="form-check-label" for="road1">
+                          <input class="form-check-input" type="radio" name="route" id="route1" value="Маршрут1">
+                          <label class="form-check-label" for="route1">
                             Маршрут 1
                           </label>
                         </div>
                       </li>
                       <li> 
                         <div class="form-check dropdown-item disabled">
-                          <input class="form-check-input" type="radio" name="bpla" id="road2" value="Маршрут2">
-                          <label class="form-check-label" for="road2">
+                          <input class="form-check-input" type="radio" name="bpla" id="route2" value="Маршрут2">
+                          <label class="form-check-label" for="route2">
                           Маршрут 2
                           </label>
                         </div>
@@ -124,7 +124,7 @@ class CreateTask extends HTMLElement {
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="createTaskLabel2">Запустить ${this.tasks?.bpla} по маршруту ${this.tasks?.road}</h1>
+                <h1 class="modal-title fs-5" id="createTaskLabel2">Запустить ${this.tasks?.bpla} по маршруту ${this.tasks?.route}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">

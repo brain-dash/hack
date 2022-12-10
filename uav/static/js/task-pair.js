@@ -24,7 +24,7 @@ class TaskPair extends HTMLElement {
         return /*html*/`
         <div>
           <slot name="name"></slot>
-          <slot name="road"></slot>
+          <slot name="route"></slot>
         </div>
       `
     }

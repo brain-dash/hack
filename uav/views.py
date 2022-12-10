@@ -208,7 +208,7 @@ def login_user(request):
             login(request, user)
             return redirect("app")
         else:
-            messages.success(request, ('There was an error logging in!'))
+            messages.success(request, ('Введен неверный логин/пароль!'))
             return redirect('login')
     else:
 
@@ -219,4 +219,10 @@ def logout_user(request):
     logout(request)
     #messages.success(request,('You were logged out!'))
     return redirect('login')
+
+def listUav(request):
+    return render(request, 'listbpla.html')
+
+def listRoute(request):
+    return render(request, 'list-route.html')
      

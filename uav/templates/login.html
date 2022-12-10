@@ -40,6 +40,11 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    {% if messages %}
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+      {% endif %}
     
 </body>
 </html>

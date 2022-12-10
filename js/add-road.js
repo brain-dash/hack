@@ -1,4 +1,4 @@
-class AddRoad extends HTMLElement {
+class Addroute extends HTMLElement {
     constructor(){
       super();
       this.attachShadow({mode: 'open'});
@@ -11,7 +11,7 @@ class AddRoad extends HTMLElement {
       this.shadowRoot.querySelector("button").addEventListener("click", ()=>this.handlerClick())
     }
     handlerClick = () =>{
-      window.location.href = 'road.html';
+      window.location.href = 'route.html';
     }
     render(){
       return `${this.css()}${this.html()} `;
@@ -84,7 +84,7 @@ class AddRoad extends HTMLElement {
     }
     html(){
         return /*html*/`
-          <button class="btn btn-primary button-add"  type="submit" class="road-new">
+          <button class="btn btn-primary button-add"  type="submit" class="route-new">
             <div class="svg-container" > 
               <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M26.76 10.096V2.704H28.824V10.096H26.76ZM23.992 7.376V5.424H31.608V7.376H23.992Z" fill="white"/>
@@ -97,6 +97,6 @@ class AddRoad extends HTMLElement {
     }
   }
   
-if (!customElements.get('bpla-add-road')) {
-    customElements.define('bpla-add-road',AddRoad);
+if (!customElements.get('bpla-add-route')) {
+    customElements.define('bpla-add-route',Addroute);
 }

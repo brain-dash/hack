@@ -1,4 +1,4 @@
-class TableRoad extends HTMLElement {
+class Tableroute extends HTMLElement {
     constructor(){
       super();
       this.innerHTML = this.render();
@@ -10,7 +10,7 @@ class TableRoad extends HTMLElement {
     static get observedAttributes() { return ['name','status']; }
   
     connectedCallback() {
-      this.querySelector("#editRoadSubmit").addEventListener('submit', (e)=>this.handlerSubmit(e));
+      this.querySelector("#editrouteSubmit").addEventListener('submit', (e)=>this.handlerSubmit(e));
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -23,7 +23,7 @@ class TableRoad extends HTMLElement {
     }
     handlerSubmit = (e) =>{
       e.preventDefault();
-      window.location.href = 'road.html';
+      window.location.href = 'route.html';
     }
     render(){
       return `${this.css()}${this.html()} `;
@@ -64,7 +64,7 @@ class TableRoad extends HTMLElement {
     html(){
         return /*html*/`
           <div class="table-bpla-el">
-            <button type="button" class="more" data-bs-toggle="modal" data-bs-target="#editRoad" >
+            <button type="button" class="more" data-bs-toggle="modal" data-bs-target="#editroute" >
               <svg width="5" height="20" viewBox="0 0 5 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="2.5" cy="3" r="2.5" fill="white"/>
                 <circle cx="2.5" cy="10" r="2.5" fill="white"/>
@@ -72,7 +72,7 @@ class TableRoad extends HTMLElement {
               </svg>
             </button>
             
-            <form id="editRoadSubmit" >
+            <form id="editrouteSubmit" >
               <button class="btn btn-primary"  type="submit">
                 <p class="table-bpla-el-name"></p>
               </button>
@@ -83,6 +83,6 @@ class TableRoad extends HTMLElement {
     }
   }
   
-if (!customElements.get('bpla-table-road')) {
-    customElements.define('bpla-table-road',TableRoad);
+if (!customElements.get('bpla-table-route')) {
+    customElements.define('bpla-table-route',Tableroute);
 }

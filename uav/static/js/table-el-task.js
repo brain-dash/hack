@@ -60,22 +60,22 @@ class TableTask extends HTMLElement {
           justify-content: center;
           align-items: center;
         }
-        .road{
+        .route{
           display:flex;
           flex-direction:column;
           align-items: end;
         }
-        .road-info{
+        .route-info{
           display:flex;
           
         }
-        .road-info p{
+        .route-info p{
           margin:0;
         }
         ::slotted(*){
           margin: 0 !important;;
         }
-        .road-info ::slotted(*){
+        .route-info ::slotted(*){
           font-weight:700;
           color:var(--light-blue);
         }
@@ -90,9 +90,9 @@ class TableTask extends HTMLElement {
               </svg>
               <slot name="name"></slot>
             </div>
-            <div class="road">
-              <slot name="road"></slot>
-              <div class="road-info">
+            <div class="route">
+              <slot name="route"></slot>
+              <div class="route-info">
                 <p>Долетит через</p>
                 <slot name="time"></slot>
               </div>

@@ -112,14 +112,14 @@ button{
 .map{
     flex-grow: 1;
 }
-.road-char{
+.route-char{
     width: 80%;
     justify-content: space-between;
 }
-.road-text{
+.route-text{
     display: flex;
 }
-.road-text p{
+.route-text p{
     padding-left: 10px;
 }
 .header-editable{
