@@ -91,3 +91,4 @@ class View extends HTMLElement {
 if (!customElements.get('bpla-view')) {
     customElements.define('bpla-view',View);
 }
+  
