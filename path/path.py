@@ -72,6 +72,13 @@ class Path:
     def __getitem__(self, key):
         return self._vectors[key]
 
+    def get_coords_list(self):
+        coords_list = []
+        for i in range(len(self._points)):
+            coords_list.append(self._points[i].list())
+
+        return coords_list
+
     @property
     def points(self):
         return self._points
@@ -84,9 +91,9 @@ class Path:
         path = Path(points)
         return path
 
-    def optimize_tsp(self, path: Path):
+    def optimize_tsp(self, path: Path, coordinates=True, openpath=False):
         from pathfinding.tsp import find_shortest_path
-        permutation = find_shortest_path(path)
+        permutation = find_shortest_path(path, coordinates, openpath)
         self._points = Path.create_permutation(path, permutation)
 
     def optimize_wetzel(self, path: Path, radius, n):
@@ -102,9 +109,11 @@ class Path:
 
         self._points = new_points
 
-    def optimize(self, path: Path, radius=0, n=3):
-        self.optimize_wetzel(path, radius, n)
-        self.optimize_tsp(path)
+    def optimize(self, path: Path, radius=0, n=3, tsp=True, wetzel=True, coordinates=True, openpath=False):
+        if wetzel:
+            self.optimize_wetzel(path, radius, n)
+        if tsp:
+            self.optimize_tsp(path, coordinates, openpath)
         self.create_vectors()
 
     @staticmethod
@@ -114,3 +123,16 @@ class Path:
         for i in range(len(permutation)):
             points_optimized.append(path.points[permutation[i]])
         return points_optimized
+
+    def remove_straight_lines(self, iterations=1):
+        for j in range(iterations):
+            for i in range(len(self._vectors) - 1):
+                if i >= len(self._vectors) - 1:
+                    break
+                angle_between = Vector.angle(self._vectors[i], self._vectors[i + 1])
+                if 0 <= angle_between <= 15:
+                    del self._points[i + 1]
+                self.create_vectors()
+
+    # def remove_overlaping(self, radius):
+

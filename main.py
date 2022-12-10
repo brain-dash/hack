@@ -1,14 +1,16 @@
+import copy
 import sys
 import pathlib
 
 sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
-from pathfinding.dubins import plan_path
+from pathfinding.dubins1 import plan_path
 from pathfinding.wetzel import *
 
 import numpy as np
 from path.point import Point
 from path.path import Path
 from utils.plot import plot_arrow, plot_curvature
+from copy import deepcopy
 
 show_animation = True
 def vector_info(vector):
@@ -59,7 +61,7 @@ def main():
     print("Dubins path planner sample start!!")
     import matplotlib.pyplot as plt
 
-    test_coords = [[55.763290828800116, 37.5909048461914],
+    test_coords1 = [[55.763290828800116, 37.5909048461914],
                    [55.769484573498744, 37.59536804199218],
                    [55.77180697300689, 37.601547851562486],
                    [55.772581075298376, 37.608929290771464],
@@ -92,13 +94,16 @@ def main():
                    [55.757465202629234, 37.59016271376907],
                    [55.76598262463785, 37.58123632216752]]
 
-    for i in range(len(test_coords)):
-        for j in range(len(test_coords[0])):
-            test_coords[i][j] = 10 * test_coords[i][j]
+    # for i in range(len(test_coords1)):
+    #     for j in range(len(test_coords1[0])):
+    #         test_coords1[i][j] = 10000 * test_coords1[i][j]
 
-    # path_test = Path.from_list(coords=test_coords)
+    test_coords2 = [[44.95298262463785, 37.27123632216752],
+                   [44.95402724519435, 37.28805286767577],
+                   [44.95502724519435, 37.29505286767577],
+                   [44.95830446995309, 37.30522380426023]]
 
-    curvature = 8.
+    # coord = [x[0] for x in data] #parsing json
 
     points = [[1., 1.],
               [3., 3.],
@@ -117,19 +122,30 @@ def main():
               [3., 9.],
               [5., 9.]]
 
+    for i in range(len(points)):
+        for j in range(len(points[0])):
+            points[i][j] = 100 * points[i][j]
+
+
+    curvature = 0.02
+    radius = 0.01
+
     figure, axes = plt.subplots()
 
-    path_initial = Path.from_list(coords=points)
-    radius = 1.5
-    plt.scatter(path_initial.x(), path_initial.y(), marker='x', color='green')
-    # print(path_initial.get_angles())
-    path_initial.optimize(path_initial, radius=radius, n=2)
-    path_final = plan_path(path_initial, curvature)
+    path_initial = Path.from_list(coords=test_coords1)
+    # path_final2 = copy.deepcopy(path_initial)
+    # plt.scatter(path_initial.x(), path_initial.y(), marker='x', color='green')
+    path_initial.optimize(path_initial, radius=radius, n=2, wetzel=True, coordinates=False)
+    path_initial.remove_straight_lines(iterations=3)
+    # path_final1 = plan_path(path_initial, curvature)
 
+    from pathfinding.dubins2 import plan_path_sec
+    path_final2 = plan_path_sec(path_initial)
 
     if show_animation:
         plt.plot(path_initial.x(), path_initial.y(), linewidth=1)
-        plt.plot(path_final.x(), path_final.y())
+        # plt.plot(path_final1.x(), path_final1.y(), linewidth=1)
+        plt.plot(path_final2.x(), path_final2.y())
         plt.scatter(path_initial.x(), path_initial.y(), color='red')
 
         for i in range(len(path_initial)):
@@ -137,11 +153,11 @@ def main():
                                 radius, fill=False, linestyle='dashed')
             axes.set_aspect(1)
             axes.add_artist(circle)
-            # print(path_initial[i].start.x, " ", path_initial[i].start.y, " ", path_initial[i].direction)
-            plot_arrow(path_initial[i].start.x, path_initial[i].start.y, path_initial[i].direction,
-                       arrow_length=1.0, head_width=0.1)
-        plot_arrow(path_initial.finish.x, path_initial.finish.y, path_initial.end_vec().direction,
-                   arrow_length=1.0, head_width=0.1)
+        # print(path_initial[i].start.x, " ", path_initial[i].start.y, " ", path_initial[i].direction)
+        #     plot_arrow(path_initial[i].start.x, path_initial[i].start.y, path_initial[i].direction,
+        #                arrow_length=0.001, head_width=0.001)
+        # plot_arrow(path_initial.finish.x, path_initial.finish.y, path_initial.end_vec().direction,
+        #            arrow_length=0.0005, head_width=0.0000001)
         plt.grid(True)
         plt.axis("equal")
         plt.show()

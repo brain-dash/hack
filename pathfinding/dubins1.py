@@ -8,14 +8,17 @@ from utils.angle import angle_mod, rot_mat_2d
 from path.point import Point
 from path.vector import Vector
 from path.path import Path
+from path.algorithms import generate_curvature
 
 
-def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
+def plan_path(path: Path, curvature):
 
-    # print(path.get_angles())
     path_result = Path()
     directions = path.get_angles()
     # sel_types = [['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL'], ['LRL']]
+    # curvature_list = generate_curvature(path, 50, 8)
+
+
     for i in range(len(path)):
         directions = path.get_angles()
         start_direction = directions[i]
@@ -34,7 +37,7 @@ def plan_path(path: Path, curvature, step_size=0.1, selected_types=None):
                                                                     end_direction,
                                                                     curvature)
                                                                     # selected_types=sel_types[i])
-        print(mode)
+        # print(mode)
         path_result.extend(path_two_points)
     return path_result
 
@@ -219,6 +222,7 @@ def _LRL(alpha, beta, d):
     d3 = _mod2pi(_mod2pi(beta) - alpha - d1 + _mod2pi(d2))
     return d1, d2, d3, mode
 
+
 _PATH_TYPE_MAP = {"LSL": _LSL, "RSR": _RSR, "LSR": _LSR, "RSL": _RSL,
                   "RLR": _RLR, "LRL": _LRL, }
 
@@ -257,8 +261,11 @@ def _dubins_path_planning_from_origin(end_x, end_y, end_yaw, curvature,
 def _interpolate(length, mode, max_curvature, origin_x, origin_y,
                  origin_yaw, path_x, path_y, path_yaw):
     if mode == "S":
+        # path_x.append(origin_x + length / max_curvature * cos(origin_yaw))
+        # path_y.append(origin_y + length / max_curvature * sin(origin_yaw))
         path_x.append(origin_x + length / max_curvature * cos(origin_yaw))
         path_y.append(origin_y + length / max_curvature * sin(origin_yaw))
+
         path_yaw.append(origin_yaw)
     else:  # curve
         ldx = sin(length) / max_curvature

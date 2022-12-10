@@ -1,4 +1,5 @@
 from path.point import Point
+from path.vector import Vector
 from path.path import Path
 import math
 
@@ -40,6 +41,22 @@ def find_closest_points(path: Path, radius, n):
             del points[indexes[m]]
         i += 1
     return result
+
+
+def turn_radius1(speed,  g):
+    return math.pow(speed, 2) / g
+
+
+def generate_curvature(path: Path, speed, g):
+    # g *= 9.8
+    turn_radius = math.pow(speed, 2) / g
+    curvature_list = []
+    for i in range(len(path)):
+        curvature_list.append(turn_radius)
+
+    return curvature_list
+
+
 
 
 

@@ -16,13 +16,13 @@ class Vector:
             if self.x == 0:
                 return np.deg2rad(90)
             # direction = math.degrees(math.atan2(self.y / self.x))
-            direction = math.degrees(math.atan2(self.y, self.x))
+            direction = math.fabs(math.degrees(math.atan2(self.y, self.x)))
             return np.deg2rad(direction)
         else:
             if self.x == 0:
                 return np.deg2rad(-90)
             # direction = math.degrees(math.atan(self.y / self.x))
-            direction = math.degrees(math.atan2(self.y, self.x))
+            direction = math.fabs(math.degrees(math.atan2(self.y, self.x)))
             return np.deg2rad(direction)
 
     @property

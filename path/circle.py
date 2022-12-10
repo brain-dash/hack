@@ -1,9 +1,39 @@
+from __future__ import annotations
+
+import math
+
 from path.point import Point
 class Circle:
     INF = 1e18
     def __init__(self, center=Point(x=0, y=0), radius=0) -> None:
         self.center = center
         self.radius = radius
+
+    def intersection(self, c: Circle):
+        dist = Point.dist(self.center, c.center)
+        if dist > self.radius + c.radius:
+            return None
+        elif dist == 0 and self.radius == c.radius:
+            return None
+        elif dist < math.fabs(self.radius - c.radius):
+            return None
+        else:
+            ch_dist = (self.radius ** 2 - c.radius ** 2 + d ** 2) / (2 * d)
+            hch_d  = math.sqrt(self.radius**2 - ch_dist**2)
+            tempx = (ch_dist * (c.center.x - self.center.x)) / dist
+            tempy = (ch_dist * (c.center.y - self.center.y)) / dist
+
+            return Point(coords=[self.center.x + tempx, self.center.y - tempy]), \
+                   Point(coords=[self.center.x - tempx, self.center.y + tempy])
+
+
+
+
+
+
+
+
+
 
     @staticmethod
     def is_inside(circle, point):
