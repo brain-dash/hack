@@ -15,16 +15,19 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from .forms import SignInForm, SignUpForm
 from django.views.decorators.http import require_http_methods
+
+#-----------------------API-------------------------------------------
 @login_required
 def apiGetUav(request):
     uavs = Uav.objects.all().select_related('status').values('name','status__status')
-    context = []
+    context = {}
     for uav in uavs:
-        context.append(
+        context.update(
             {
                  uav['name'] : uav['status__status'],
             }
         )
+    context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
 def apiGetSpecifiedRoute(request):
@@ -32,36 +35,37 @@ def apiGetSpecifiedRoute(request):
     data = {'name' : "Route1"}
     name = data['name']
     route = Route.objects.filter(name = name)[0]
-    context = [{
+    context = {
         'points' : route.points, 
         'is_used' : route.is_used    
-    }]
-
+    }
+    context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
 @login_required
 def apiGetRoute(request):
     routes = Route.objects.all()
-    context = []
+    context = {}
     for route in routes:
-        context.append(
+        context.update(
             {
                 'id':route.id,
                 'points' : route.points,
                 'time_create' : route.on_create,
             }
         ) 
+    context = json.dumps(context, ensure_ascii=False, indent=4, sort_keys=True, default=str)
     return HttpResponse(context, content_type="application/json")
 
 @login_required
 def apiGetProblem(request):
 
     problems = Problem.objects.all().select_related('route', 'uav').values('route__name', 'uav__name')
-    context = []
-    
+    context = {}
     for problem in problems:
-        context.append(problem)
+        context.update(problem)
 
+    context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
 
 
@@ -71,17 +75,14 @@ def apiGetСharacteristics(request):
     data = {'name' : 'Тест1' }
     uav_route_name = data['name']
     uav = Uav.objects.filter(name = uav_route_name)[0]
-    context = [{
+    context = {
         'name' : uav.name, 
         'velocity' : uav.velocity,
         'maximum_gforce' : uav.maximum_gforce,
         'volume' : uav.volume
-    }]
+    }
+    context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
-
-
-
-
 
 @login_required
 def apiChangeСharacteristics(request):
@@ -93,8 +94,8 @@ def apiChangeСharacteristics(request):
     uav.volume = data['volume']
 
     uav.save()
-    context = True
-    return HttpResponse(context, content_type="application/json")
+    result = True
+    return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
 @login_required
 def apiCreateProblem(request):
@@ -109,8 +110,8 @@ def apiCreateProblem(request):
         route = route
     )
     problem.save()
-    context = True
-    return HttpResponse(context, content_type="application/json")
+    result = True
+    return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
 
 @login_required
@@ -155,15 +156,13 @@ def apiCreateVua(request):
     return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
 
 
-class MainView(TemplateView):
-    template_name = 'index.html'
-    def get(self, request):
-        if request.user.is_authenticated():
-            return render(request, "index.html")
-        else:
-            return render(request, "login.html")
 
 
+#------------------------------------------------------------------------------
+
+
+
+#-------------------PAGES------------------------------------------------------
 def startPage(request):
     print(request.user.is_authenticated)
     if not request.user.is_authenticated:
@@ -225,4 +224,7 @@ def listUav(request):
 
 def listRoute(request):
     return render(request, 'list-route.html')
+
+def listTasks(request):
+    return render(request, 'tasks.html')
      
