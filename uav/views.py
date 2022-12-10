@@ -20,11 +20,12 @@ from django.views.decorators.http import require_http_methods
 @login_required
 def apiGetUav(request):
     uavs = Uav.objects.all().select_related('status').values('name','status__status')
-    context = {}
+    context = []
     for uav in uavs:
-        context.update(
+        context.append(
             {
-                 uav['name'] : uav['status__status'],
+                 "name" : uav['name'],
+                 "status" : uav['status__status'],
             }
         )
     context = json.dumps(context, ensure_ascii=False)

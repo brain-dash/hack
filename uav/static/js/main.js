@@ -9,4 +9,10 @@
         document.getElementById("btn-save-route").onclick = ()=>window.location.href = 'list-route.html';
     if (document.getElementById("logout"))
         document.getElementById("logout").onclick = ()=>window.location.href = 'login.html';
+
+    // if (document.getElementById("bpla-list-container")){
+    //     fetch(url, options)
+    //         .then(response => response.json())
+    //         .then(result => /* обрабатываем результат */)
+    //             }
 })()
