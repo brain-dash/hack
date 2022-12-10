@@ -29,6 +29,9 @@ urlpatterns = [
     path('listbpla', views.listUav, name='listbpla'),
     path('list-route', views.listRoute, name='list-route'),
     path('listTasks', views.listTasks, name='listTasks'),
+    path('select', views.select, name='select'),
+    path('route', views.route, name='route'),
+    path('view', views.view, name='view'),
 
 #-------------------Api-----------------------------------------------------------#
     path('api/getSpecifiedRoute', views.apiGetSpecifiedRoute, name = 'apiGetSpecifiedRoute'),

@@ -224,7 +224,13 @@ def listUav(request):
 
 def listRoute(request):
     return render(request, 'list-route.html')
+def route(request):
+    return render(request, 'route.html')
 
 def listTasks(request):
     return render(request, 'tasks.html')
      
+def select(request):
+    return render(request, 'select.html')
+def view(request):
+    return render(request, 'view.html')
