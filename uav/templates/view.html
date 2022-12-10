@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 
+    <script defer src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script defer src="{% static 'js/prev.js' %}"></script>
     <script defer src="{% static 'js/account.js' %}"></script>
     <script defer src="{% static 'js/main.js' %}"></script>
@@ -17,20 +18,20 @@
 
     <script defer src="{% static 'js/characteristics.js' %}"></script>
     <script defer src="{% static 'js/view.js' %}"></script>
-    <script defer src="{%js/task-pair.js%}"></script>
+    <script defer src="{% static 'js/task-pair.js' %}"></script>
 
 
     <title>Управление БПЛА</title>
 </head>
 <body>
     <header class="header-secondary">
-        <button class="more" id="toMain" >
+        <a class="more" id="toMain" href='{% url "app" %}'>
             <svg width="5" height="20" viewBox="0 0 5 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="2.5" cy="3" r="2.5" fill="white"/>
               <circle cx="2.5" cy="10" r="2.5" fill="white"/>
               <circle cx="2.5" cy="17" r="2.5" fill="white"/>
             </svg>
-        </button>
+        </a>
         <bpla-task-pair>
             <p slot="name">БПЛА 1</p>
             <p slot="route">Маршрут 1</p>
@@ -100,7 +101,7 @@
         <div slot="fromstart"><p>Время в пути</p> <p>11 мин</p></div>
     </bpla-chars>
     <bpla-button  id="btn-finish">
-        <a href='{% url "select" %}'> Закончить задачу</a>
+        <a href="{% url 'app' %}"> Закончить задачу</a>
     </bpla-button>
     
 </body>
