@@ -29,7 +29,7 @@ ymaps.modules.define('AnimatedLine', [
     }
     defineClass(AnimatedLine, Polyline, {
         // Анимировать линию.
-        start: function () {
+        start: function (borderCircles, sendCoord) {
             let value = 0;
             let coords = this._smoothCoords;
             let line = this;
@@ -49,8 +49,23 @@ ymaps.modules.define('AnimatedLine', [
                     if (!currentTime || (currentTime - previousTime) > loopTime) {
                         line.geometry.set(value, coords[value]);
 
-                        p.geometry.setCoordinates(coords[value]);
+                        let circle = borderCircles.searchContaining(coords[value]).getIterator().getNext();
 
+                        if (Object.keys(circle).length != 0) {
+                            let visitedPoinCoord = circle.geometry.getCoordinates();
+                            if (visitedPoinCoord == sendCoord[1]) {
+                                let newUAVCoord = [coords[value][0] - (Math.random() - 0.5), coords[value][1] - (Math.random() - 0.5)];
+                                console.log(circle);
+                                ymaps.geoQuery(circle).removeFromMap(parentMap);
+                                console.log(borderCircles);
+                                borderCircles = borderCircles.slice(1);
+                                console.log(borderCircles);
+                                sendCoord.splice(1);
+                                sendCoord[0] = newUAVCoord;
+                                // код отправки 
+                            }
+                        }
+                        p.geometry.setCoordinates(coords[value]);
                         value++;
                         previousTime = currentTime;
                     }
@@ -70,9 +85,9 @@ ymaps.modules.define('AnimatedLine', [
             this.geometry.setCoordinates([]);
         },
         // Запустить полный цикл анимации.
-        animate: function () {
+        animate: function (borderCircles, sendCoord) {
             this.reset();
-            this.start();
+            this.start(borderCircles, sendCoord);
             let deferred = vow.defer();
             this.events.once('animationfinished', function () {
                 deferred.resolve();
