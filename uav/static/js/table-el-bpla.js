@@ -5,6 +5,7 @@ class TableBpla extends HTMLElement {
       this.shadowRoot.innerHTML = this.render();
       this.nameEl = this.shadowRoot.querySelector(".table-bpla-el-name");
       this.headerEl = this.shadowRoot.querySelector(".header-editable");
+      this.hiddenEl = this.shadowRoot.querySelector("#hiddenname");
       this.moreEl = this.shadowRoot.querySelector(".more");
     }
   
@@ -79,6 +80,7 @@ class TableBpla extends HTMLElement {
       if (name === "name") {
         this.nameEl.innerHTML = newValue;
         this.headerEl.value = newValue;
+        this.hiddenEl.value = newValue;
         this.shadowRoot.querySelector(".more").dataset.bsId=newValue;
       }
       if (name === "status"){
@@ -218,34 +220,36 @@ class TableBpla extends HTMLElement {
 
             <div id="myModal" class="modal">
               
-              <form class="modal-content" action="api/changeCharacteristics" method="get" >
+              <form class="modal-content" action="/api/changeCharacteristics" method="post" >
      
 
                 <div class="modal-header">
                   <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M20.5053 5.52636L15.7314 0.527234C15.5735 0.360193 15.3856 0.22759 15.1784 0.137093C14.9713 0.0465958 14.7491 0 14.5246 0C14.3002 0 14.0779 0.0465958 13.8708 0.137093C13.6636 0.22759 13.4757 0.360193 13.3178 0.527234L0.501954 13.9477C0.342715 14.1132 0.216368 14.3101 0.130213 14.527C0.0440572 14.7439 -0.000199146 14.9765 6.73631e-07 15.2115V20.2106C6.73631e-07 20.6852 0.180032 21.1403 0.50049 21.4759C0.820948 21.8115 1.25558 22 1.70878 22H6.48268C6.70702 22.0002 6.92918 21.9539 7.13632 21.8636C7.34346 21.7734 7.53147 21.6411 7.6895 21.4744L20.5053 8.05389C20.8223 7.71701 21 7.26306 21 6.79012C21 6.31719 20.8223 5.86324 20.5053 5.52636ZM2.06121 14.8424L11.1071 5.36979L12.8906 7.23747L3.84475 16.7101L2.06121 14.8424ZM1.70878 17.0009L4.7739 20.2106H1.70878V17.0009ZM6.83511 19.8415L5.05158 17.9739L14.0974 8.50124L15.881 10.3689L6.83511 19.8415ZM17.0878 9.10516L12.3139 4.10603L14.5246 1.791L19.2985 6.79012L17.0878 9.10516Z" fill="black"/>
                   </svg>
-                  <input type="text" class="modal-title form-control header-editable" id="bpla-name" value=${this.name} id="editBPLALabel">
+                  <input type="text" class="modal-title form-control header-editable" id="bpla-name" value=${this.name} id="editBPLALabel" name="change-name">
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick = "console.log(this.headerEl.value)"></button>
                 </div>
                 <div class="modal-body">
                   <div class="mb-3">
                     <label for="bpla-mass" class="col-form-label">Скорость:</label>
-                    <input type="text" class="form-control" id="bpla-velocity">
+                    <input type="text" class="form-control" id="bpla-velocity" name="bpla-velocity">
                   </div>
          
                   <div class="mb-3">
                     <label for="bpla-angle" class="col-form-label">G-force</label>
-                    <input type="text" class="form-control" id="bpla-gforce">
+                    <input type="text" class="form-control" id="bpla-gforce" name="bpla-gforce">
                   </div>
                   <div class="mb-3">
                     <label for="bpla-angle" class="col-form-label">Масса</label>
-                    <input type="text" class="form-control" id="bpla-volume">
+                    <input type="text" class="form-control" id="bpla-volume"  name="bpla-volume">
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary btn-modal-close"  >Добавить</button>
+                  <input type="submit" class="btn btn-primary btn-modal-close"></button>
                 </div>
+                <input type="hidden"  id="hiddenname" name="name" >
+
               </form>
             </div>
         `

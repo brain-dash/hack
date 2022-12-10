@@ -90,16 +90,19 @@ def apiGetCharacteristics(request):
 @csrf_exempt
 @login_required
 def apiChangeCharacteristics(request):
-    #data = json.loads(request.body)["data"]
-    data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
+    data = request.POST
+    
+    #data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
     uav = Uav.objects.filter(name = data['name'])[0]
-    uav.velocity = data['velocity']
-    uav.maximum_gforce = data['maximum_gforce']
-    uav.volume = data['volume']
-
+    uav.name = data['change-name']
+    uav.velocity = data['bpla-velocity']
+    uav.maximum_gforce = data['bpla-gforce']
+    uav.volume = data['bpla-volume']
+ 
     uav.save()
     result = True
-    return HttpResponse(json.dumps({"data": result}, default=lambda o: '<not serializable>'),content_type="application/json")
+    return redirect('listbpla')
+    
 
 @csrf_exempt
 @login_required
