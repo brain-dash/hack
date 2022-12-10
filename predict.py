@@ -22,6 +22,7 @@ def predict(points, radius=0.01, tsp=True, wetzel=True):
     path_final.remove_straight_lines()
 
     path_final = plan_path_sec(path_final)
+    return path_final.get_coords_list()
 
 if __name__ == '__main__':
 

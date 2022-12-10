@@ -10,6 +10,11 @@ class Point:
             self._x = kwargs.get('x')
             self._y = kwargs.get('y')
 
+    def __str__(self):
+        # return "x={self.x}, y={self.y}"
+        return "x=%f, y=%f" % (self.x, self.y)
+
+
     @staticmethod
     def from_list(coords: list):
         if len(coords) < 2:
@@ -19,7 +24,7 @@ class Point:
 
     @staticmethod
     def dist(p1: Point, p2: Point):
-        return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2))
+        return sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
 
     def list(self):
         return [self._x, self._y]

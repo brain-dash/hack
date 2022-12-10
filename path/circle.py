@@ -9,30 +9,29 @@ class Circle:
         self.center = center
         self.radius = radius
 
+    def __str__(self):
+        return f"Center={self.center.x}, {self.center.y}, radius={self.radius}"
+
     def intersection(self, c: Circle):
         dist = Point.dist(self.center, c.center)
+
+        dx = c.center.x - self.center.x
+        dy = c.center.y - self.center.y
+
         if dist > self.radius + c.radius:
             return None
         elif dist == 0 and self.radius == c.radius:
             return None
-        elif dist < math.fabs(self.radius - c.radius):
+        elif dist < math.fabs(c.radius - self.radius):
             return None
         else:
-            ch_dist = (self.radius ** 2 - c.radius ** 2 + d ** 2) / (2 * d)
-            hch_d  = math.sqrt(self.radius**2 - ch_dist**2)
-            tempx = (ch_dist * (c.center.x - self.center.x)) / dist
-            tempy = (ch_dist * (c.center.y - self.center.y)) / dist
+            ch_dist = (self.radius ** 2 - c.radius ** 2 + dist ** 2) / (2 * dist)
+            hch_d = math.sqrt(self.radius**2 - ch_dist**2)
+            ch_mid_x = self.center.x + (ch_dist * dx) / dist
+            ch_mid_y = self.center.y + (ch_dist * dy) / dist
 
-            return Point(coords=[self.center.x + tempx, self.center.y - tempy]), \
-                   Point(coords=[self.center.x - tempx, self.center.y + tempy])
-
-
-
-
-
-
-
-
+            return Point(coords=[ch_mid_x + (hch_d * dy), ch_mid_y - (hch_d * dx)]), \
+                   Point(coords=[ch_mid_x - (hch_d * dy), ch_mid_y + (hch_d * dx)])
 
 
     @staticmethod

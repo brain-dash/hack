@@ -19,7 +19,7 @@ def plan_path_sec(path_input: Path):
 
     path_result = Path()
     directions = path.get_angles()
-    print(directions)
+    # print(directions)
 
     path_two_points = []
     for i in range(len(path)):
@@ -39,8 +39,8 @@ def plan_path_sec(path_input: Path):
         param = calcDubinsPath(pt1, pt2, 10, 30)
         path_trajectory = dubins_traj(param, 1)
         path_trajectory = np.delete(path_trajectory, -1, 1)
-        print(f"wp1: x = {pt1.x}, y = {pt1.y}, dir = {pt1.psi}")
-        print(f"wp2: x = {pt2.x}, y = {pt2.y}, dir = {pt2.psi}")
+        # print(f"wp1: x = {pt1.x}, y = {pt1.y}, dir = {pt1.psi}")
+        # print(f"wp2: x = {pt2.x}, y = {pt2.y}, dir = {pt2.psi}")
 
         for el in path_trajectory:
             path_two_points.append(Point(x=el[0], y=el[1]))

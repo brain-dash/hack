@@ -4,11 +4,14 @@ import pathlib
 
 sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from pathfinding.dubins1 import plan_path
+from pathfinding.dubins2 import plan_path_sec
 from pathfinding.wetzel import *
 
 import numpy as np
 from path.point import Point
 from path.path import Path
+
+import matplotlib.pyplot as plt
 from utils.plot import plot_arrow, plot_curvature
 from copy import deepcopy
 
@@ -20,6 +23,75 @@ def vector_info(vector):
     print("Coords:",  vector.x, " ", vector.y)
     print("Direction rad:",  vector.direction)
     print("Direction deg:",  np.rad2deg(vector.direction))
+
+
+def test_intersection():
+    figure, axes = plt.subplots()
+
+    radius = 1
+    c1 = Circle(Point(x=0, y=0.5), radius)
+    c2 = Circle(Point(x=0, y=-1), radius)
+
+    p1, p2 = c1.intersection(c2)
+    print(p1)
+    print(p2)
+
+    plt.scatter(p1.x, p1.y, marker='x')
+    plt.scatter(p2.x, p2.y, marker='x')
+    circle1 = plt.Circle((c1.center.x, c1.center.y), radius, fill=False, linestyle='dashed')
+    circle2 = plt.Circle((c2.center.x, c2.center.y), radius, fill=False, linestyle='dashed')
+
+    axes.set_aspect(1)
+    axes.add_artist(circle1)
+    axes.add_artist(circle2)
+
+    plt.grid(True)
+    plt.axis("equal")
+    plt.show()
+
+
+def test_circles():
+    figure, axes = plt.subplots()
+    test_coords = [[44.95298262463785, 37.27123632216752],
+                    [44.95402724519435, 37.28805286767577],
+                    [44.95502724519435, 37.29505286767577],
+                    [44.95830446995309, 37.30522380426023]]
+
+
+
+    radius = 0.005
+    path_initial = Path.from_list(coords=test_coords)
+    plt.scatter(path_initial.x(), path_initial.y(), marker='x', color='green')
+    # path_initial.optimize(path_initial, radius=radius, n=2, wetzel=False, coordinates=False)
+    # path_initial.remove_straight_lines(iterations=3)
+    path_final = plan_path_sec(path_initial)
+
+    c1 = Circle(Point(x=path_initial[1].start.x, y=path_initial[1].start.y), radius)
+    c2 = Circle(Point(x=path_initial[2].start.x, y=path_initial[2].start.y), radius)
+    p1, p2 = c1.intersection(c2)
+    print(p1)
+    print(p2)
+    plt.scatter(p1.x, p1.y, color='red', marker='x')
+    plt.scatter(p2.x, p2.y, color='red', marker='x')
+
+    if show_animation:
+        plt.plot(path_initial.x(), path_initial.y(), linewidth=1)
+        plt.plot(path_final.x(), path_final.y())
+        plt.scatter(path_initial.x(), path_initial.y(), color='red')
+
+        for i in range(len(path_initial)):
+            circle = plt.Circle((path_initial[i].start.x, path_initial[i].start.y),
+                                radius, fill=False, linestyle='dashed')
+            axes.set_aspect(1)
+            axes.autoscale()
+            axes.add_artist(circle)
+
+
+
+        plt.grid(True)
+        plt.axis("equal")
+        plt.show()
+
 
 def wetzel_test():
     import matplotlib.pyplot as plt
@@ -59,7 +131,6 @@ def wetzel_test():
 
 def main():
     print("Dubins path planner sample start!!")
-    import matplotlib.pyplot as plt
 
     test_coords1 = [[55.763290828800116, 37.5909048461914],
                    [55.769484573498744, 37.59536804199218],
@@ -139,7 +210,6 @@ def main():
     path_initial.remove_straight_lines(iterations=3)
     # path_final1 = plan_path(path_initial, curvature)
 
-    from pathfinding.dubins2 import plan_path_sec
     path_final2 = plan_path_sec(path_initial)
 
     if show_animation:
@@ -165,5 +235,7 @@ def main():
 
 if __name__ == '__main__':
 
-    main()
+    test_intersection()
+    # test_circles()
+    # main()
     # wetzel_test()
