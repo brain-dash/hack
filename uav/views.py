@@ -76,6 +76,9 @@ def apiGetProblem(request):
 def apiGetCharacteristics(request):
     data = json.loads(request.body)
     #data = {'name' : 'Тест1' }
+    #print(request.POST)
+    #json.loads(request)
+    #print(json.loads(request.body.decode('utf-8')))
     uav_route_name = data['name']
     uav = Uav.objects.filter(name = uav_route_name)[0]
     context = {
@@ -91,6 +94,8 @@ def apiGetCharacteristics(request):
 @login_required
 def apiChangeCharacteristics(request):
     #data = json.loads(request.body)["data"]
+    
+    
     data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
     uav = Uav.objects.filter(name = data['name'])[0]
     uav.velocity = data['velocity']
