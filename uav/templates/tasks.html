@@ -22,7 +22,6 @@
 
 
 
-    <script defer src="js/bootstrap.bundle.min.js"></script>
     <title>Управление БПЛА</title>
 </head>
 <body>
@@ -31,7 +30,6 @@
         <bpla-account></bpla-account>
     </header>
     <h1> Активные задания </h1>
-    
     <div class="bpla-list-container">
         <bpla-table-task>
             <p slot="name"> БПЛА 1</p>
@@ -45,5 +43,37 @@
         </bpla-table-task>
     </div>
     
+    <script>
+        //console.log("/api/")
+        (async () =>{
+            let response = await fetch('/api/getProblem');
+            let json = await response.json(); // прочитать тело ответа как текст
+            const container = document.querySelector(".bpla-list-container");
+            json.forEach(element => {
+                const task = document.createElement("bpla-table-bpla");
+                bpla.setAttribute("status",element.status);
+                bpla.setAttribute("name",element.name);
+                bpla.token='{{ csrf_token }}';
+                // bpla.innerHTML='{{ csrf_token }}';
+                container.appendChild(bpla)
+                
+            });
+    
+    
+            let xhr = new XMLHttpRequest(); 
+            let url = new URL('http://127.0.0.1:8000/api/getCharacteristics');
+            url.searchParams.set('name', "2");
+            const body = {
+                'name' : 12
+            } 
+            xhr.open('POST', url);
+            xhr.setRequestHeader('csrftoken', '{{ csrf_token }}'); 
+            xhr.send([body]);
+            xhr.onload = () => {
+            console.log(`Загружено: ${xhr.status} ${xhr.response}`);
+            };
+        })()
+        
+    </script>
 </body>
 </html>
