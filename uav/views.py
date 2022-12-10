@@ -71,9 +71,9 @@ def apiGetProblem(request):
 
 
 @login_required
-def apiGetСharacteristics(request):
-    #data = json.loads(request.body)["data"]
-    data = {'name' : 'Тест1' }
+def apiGetCharacteristics(request):
+    data = json.loads(request.body)["data"]
+    # data = {'name' : 'Тест1' }
     uav_route_name = data['name']
     uav = Uav.objects.filter(name = uav_route_name)[0]
     context = {
@@ -86,7 +86,7 @@ def apiGetСharacteristics(request):
     return HttpResponse(context, content_type="application/json")
 
 @login_required
-def apiChangeСharacteristics(request):
+def apiChangeCharacteristics(request):
     #data = json.loads(request.body)["data"]
     data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
     uav = Uav.objects.filter(name = data['name'])[0]
