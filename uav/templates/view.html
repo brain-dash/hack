@@ -35,25 +35,27 @@
                 <circle cx="2.5" cy="17" r="2.5" fill="white" />
             </svg>
         </a>
+       
+        
+       
+        <bpla-account>
+            <p>{{user}}</p>
+        </bpla-account>
+    </header>
+    <div class="selects">
         <div>
-            <p slot="name">Список БПЛА</p>
+            <p >Список БПЛА</p>
             <select id="choice-bpla">
                 <option id="select-bpla" value="" disabled selected hidden>Выберите БПЛА</option>
             </select>
         </div>
         <div>
-            <p slot="route">Список маршрутов</p>
+            <p>Список маршрутов</p>
             <select id="choice-route">
                 <option id="select-route" disabled selected hidden>Выберите маршрут</option>
             </select>
         </div>
-        <bpla-task-pair>
-
-
-
-        </bpla-task-pair>
-        <bpla-account></bpla-account>
-    </header>
+    </div>
     <button data-bs-toggle="modal" data-bs-target="#history">
         <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_d_5_529)">
@@ -109,17 +111,48 @@
             </div>
         </div>
     </div>
+    <div class="map-buttons">
+        <button id="start">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15.5L11.25 19.3971L11.25 11.6029L21 15.5Z" fill="white"/>
+                <circle cx="14.5" cy="15.5" r="12" stroke="white"/>
+            </svg>
+            <p>Начать построение</p>
+        </button>
+        <button id="stop">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="14.5" cy="15.5" r="12" stroke="white"/>
+                <path d="M8 22L21.1421 8.85784" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <line x1="1" y1="-1" x2="19" y2="-1" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 21 23)" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>  
+            <p>Закончить построение</p>
+        </button>
+        <label for="spead">Cкорость, м/с</label>
+        <input id="spead" type="number" placeholder="0">
+
+        <button id="go">
+            <svg width="41" height="29" viewBox="0 0 41 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M39 14.4228C39 14.8003 38.925 15.174 38.7796 15.5217C38.6341 15.8694 38.4211 16.1841 38.1532 16.447C37.8852 16.71 37.5678 16.9159 37.2198 17.0526C36.8717 17.1893 36.5001 17.2539 36.1268 17.2428L29.4863 17.0458L24.6453 27.168C24.2571 27.9814 23.44 28.5 22.5458 28.5C22.3621 28.5001 22.1805 28.4609 22.013 28.3848C21.8455 28.3087 21.6959 28.1975 21.574 28.0586C21.4521 27.9197 21.3608 27.7563 21.306 27.579C21.2513 27.4018 21.2343 27.2148 21.2563 27.0305L22.4659 16.8375L17.189 16.6816L16.5023 18.5819C16.3751 18.9337 16.144 19.2374 15.8405 19.4521C15.5369 19.6668 15.1754 19.782 14.805 19.7822C14.639 19.7822 14.4747 19.7491 14.3214 19.6848C14.1681 19.6206 14.0288 19.5264 13.9116 19.4077C13.7943 19.289 13.7013 19.1481 13.6379 18.993C13.5745 18.8379 13.542 18.6717 13.5422 18.5039V16.4123L12.4069 16.1729C12.0093 16.0891 11.6524 15.8695 11.3961 15.5509C11.1399 15.2322 11 14.8341 11 14.4235C11 14.0128 11.1399 13.6147 11.3961 13.2961C11.6524 12.9775 12.0093 12.7578 12.4069 12.6741L13.5422 12.436V10.3416C13.5419 10.0306 13.6539 9.73017 13.8573 9.49686C14.0607 9.26355 14.3414 9.11343 14.6466 9.07473L14.805 9.06481C15.175 9.06515 15.5361 9.18029 15.8393 9.39467C16.1426 9.60906 16.3735 9.91237 16.5009 10.2637L17.1904 12.1625L22.4477 12.0067L21.2563 1.96809C21.2537 1.94217 21.2518 1.91618 21.2507 1.89015L21.2479 1.81221C21.2479 1.08809 21.8296 0.5 22.5458 0.5C23.3657 0.5 24.1197 0.935042 24.5402 1.63366L24.6453 1.83205L29.4148 11.8012L36.1282 11.6028C36.8679 11.581 37.5859 11.8573 38.1242 12.3707C38.6624 12.8841 38.977 13.5927 38.9986 14.3406V14.4228H39Z" fill="white"/>
+                <line x1="19.5" y1="6.5" x2="11.5" y2="6.5" stroke="white" stroke-linecap="round"/>
+                <line x1="10.5" y1="10.5" x2="2.5" y2="10.5" stroke="white" stroke-linecap="round"/>
+                <line x1="11.5" y1="17.5" x2="3.5" y2="17.5" stroke="white" stroke-linecap="round"/>
+                <line x1="18.5" y1="21.5" x2="10.5" y2="21.5" stroke="white" stroke-linecap="round"/>
+                <line x1="12.5" y1="25.5" x2="4.5" y2="25.5" stroke="white" stroke-linecap="round"/>
+                <line x1="14.5" y1="3.5" x2="6.5" y2="3.5" stroke="white" stroke-linecap="round"/>
+            </svg>
+            <p>Отправить БПЛА</p>
+        </button>
+    </div>
+   
+
+    <input id="coords" name="coords" type="hidden" value="">
+
+    
+
+    
     <bpla-view>
         <div id="map" slot="map">
-            <input id="start" type="button" value="Начать построение">
-            <input id="stop" type="button" value="Закончить построение">
-
-            <input id="coords" name="coords" type="hidden" value="">
-
-            <label for="spead">скорость в м/с</label>
-            <input id="spead" type="number">
-
-            <input id="go" type="button" value="Начать маршрут">
+          
         </div>
         <div slot="video">
             Видео

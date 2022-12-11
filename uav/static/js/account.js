@@ -37,7 +37,7 @@ class Account extends HTMLElement {
           justify-content:center;
           color:white;
         } 
-        p{
+        ::slotted(p){
           padding:0 20px;
         }
     </style>`

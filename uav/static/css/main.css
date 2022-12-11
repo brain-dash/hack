@@ -368,6 +368,77 @@ button {
     border-top: 1px solid var(--light-blue)
 
   }
+  /****map*/
+  .map-buttons{
+    position: relative;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 80%;
+    max-width: 400px;
+    margin-bottom:20px ;
+  }
+#start, #stop, #go{
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+width:220px;
+transition: none;
+transition: opacity 0.4s linear;
+height: 35px;
+display: flex;
+justify-content: space-between;
+}
+#start, #stop{
+    position: absolute;
+    top: 0;
+}
+#spead{
+    color: white;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px white solid !important;
+    border-radius: 0;
+    border: none;
+    padding-top: 8px;
+}
+#spead:focus{
+    color: white;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 1px white solid !important;
+    border-radius: 0;
+}
+#spead::placeholder{
+    color: #969696;
+}
+
+#spead:focus-visible{
+    border: none;
+    box-shadow: none;
+    outline:none;
+}
+
+#start p, #stop p, #go p{
+    padding-left:20px;
+}
+.selects{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+.selects div{
+    width: 100%;
+    max-width: 400px;
+}
+#choice-bpla, #choice-route{
+    width: 100%;
+    max-width: 400px;
+}
 @media screen and (min-width: 650px) {
     body {}
 }

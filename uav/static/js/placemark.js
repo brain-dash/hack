@@ -24,8 +24,16 @@ function init() {
         controls: ["zoomControl"],
     });
     myMap.behaviors.disable(['rightMouseButtonMagnifier', 'scrollZoom']);
+    stopEditBtn.style.opacity=0;
+    stopEditBtn.style.zIndex=1
+    startEditBtn.style.zIndex=5
 
     startEditBtn.onclick = function() {
+        stopEditBtn.style.opacity=1;
+        stopEditBtn.style.zIndex=5;
+        startEditBtn.style.opacity=0;
+        startEditBtn.style.zIndex=1;
+
         myMap.geoObjects.removeAll();
         simplePath = new ymaps.Polyline([], {}, {
             strokeColor: "#ffc107",
@@ -102,6 +110,11 @@ function init() {
     };
 
     stopEditBtn.onclick = function() {
+        stopEditBtn.style.opacity=0;
+        startEditBtn.style.opacity=1;
+        stopEditBtn.style.zIndex=1;
+        startEditBtn.style.zIndex=5;
+
         simplePath.editor.stopDrawing();
     };
 
