@@ -107,8 +107,13 @@ function init() {
 
     async function sendSimplePath() {
         console.log(sendCoord)
+
         let dict = {
-            route: sendCoord
+            route: sendCoord,
+            tsp: document.querySelector('#tsp').checked,
+            wetzel: document.querySelector('#wetzel').checked,
+            overlapping: document.querySelector('#overlapping').checked,
+            vel: document.getElementById('spead').value
         };
         let response = await fetch("http://127.0.0.1:8000/api/OptimizeRoute", {
             method: 'POST',
