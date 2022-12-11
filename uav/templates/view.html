@@ -202,54 +202,6 @@
     <bpla-button id="btn-finish">
         <a href="{% url 'app' %}"> Закончить задачу</a>
     </bpla-button>
-    <script>
-        let selectElement1 = document.getElementById('choice-bpla');
-
-        (async() => {
-            let response = await fetch('/api/getUav');
-            let json = await response.json(); // прочитать тело ответа как текст
-            json.forEach(element => {
-                option = document.createElement('option');
-                option.text = element.name;
-                option.value = element.velocity;
-                selectElement1.add(option)
-            });
-
-        })()
-
-        let selectElement2 = document.getElementById('choice-route');
-        (async() => {
-            let response = await fetch('/api/getRoute');
-            let json = await response.json(); // прочитать тело ответа как текст
-            json.forEach(element => {
-                option = document.createElement('option');
-                option.value = option.text = element.name;
-                selectElement2.add(option)
-            })
-            option = document.createElement('option');
-            option.text = 'Создать маршрут'
-            option.id = 'CreateRoute'
-            option.value = 'Создать маршрут'
-            selectElement2.add(option)
-            console.log(json)
-        })()
-
-        let select = document.getElementById('choice-bpla');
-        select.addEventListener('change', function() {
-            document.getElementById('spead').value = this.value;
-
-        });
-        let select1 = document.getElementById('choice-route');
-        select1.addEventListener('change', function() {
-            if (this.value == 'Создать маршрут') {
-                document.getElementById('start').hidden = false;
-                document.getElementById('stop').hidden = false;
-            } else {
-                document.getElementById('start').hidden = true;
-                document.getElementById('stop').hidden = true;
-            }
-        });
-    </script>
 </body>
 
 </html>
