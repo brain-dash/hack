@@ -375,25 +375,27 @@ button {
   /****map*/
   .map-buttons{
     position: relative;
-    height: 200px;
+    height: 130px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     width: 80%;
     max-width: 400px;
     margin-bottom:20px ;
+    flex-shrink: 0;
   }
 #start, #stop, #go{
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-width:220px;
-transition: none;
-transition: opacity 0.4s linear;
-height: 35px;
-display: flex;
-justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    width:220px;
+    transition: none;
+    transition: opacity 0.4s linear;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
 }
 #start, #stop{
     position: absolute;

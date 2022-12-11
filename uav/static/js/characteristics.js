@@ -16,10 +16,12 @@ class Characteristics extends HTMLElement {
       return /*css*/`<style> 
         :host{
           width:80%;
+          margin:10px;
         }
         ::slotted(*){
           display:flex;
           justify-content: space-between;
+          margin:10px 0;
         }
         .progress{
           
@@ -40,7 +42,7 @@ class Characteristics extends HTMLElement {
           <slot name="total"></slot>
           <slot name="fromstart"></slot>
           <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+          <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 48%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">48%</div>
         </div>
       `
     }
