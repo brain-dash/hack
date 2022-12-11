@@ -1,33 +1,33 @@
 class Tableroute extends HTMLElement {
-    constructor(){
-      super();
-      this.innerHTML = this.render();
-      this.nameEl = this.querySelector(".table-bpla-el-name");
-      this.headerEl = this.querySelector(".header-editable");
-      this.hiddenEl = this.querySelector("#hiddenRoadName");
-      this.moreEl = this.querySelector(".more");
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = this.render();
+        this.nameEl = this.shadowRoot.querySelector(".table-bpla-el-name");
+        this.hiddenEl = this.shadowRoot.querySelector(".hiddenRoad");
+        this.moreEl = this.shadowRoot.querySelector(".more");
+        console.log(this.hiddenEl)
     }
-  
-    static get observedAttributes() { return ['name','status']; }
-  
-    connectedCallback() {
-    }
+
+    static get observedAttributes() { return ['name', 'status']; }
+
+    connectedCallback() {}
 
     attributeChangedCallback(name, oldValue, newValue) {
-      if (name === "name") {
-        this.nameEl.innerHTML = newValue;
-        this.headerEl.value = newValue;
-        this.hiddenrEl.value = newValue;
-        this.querySelector(".more").dataset.bsId=newValue;
-      }
-    
+        if (name === "name") {
+            this.nameEl.innerHTML = newValue;
+            this.hiddenEl.value = newValue;
+            console.log(this.hiddenEl)
+            this.querySelector(".more").dataset.bsId = newValue;
+        }
+
     }
 
-    render(){
-      return `${this.css()}${this.html()} `;
+    render() {
+        return `${this.css()}${this.html()} `;
     }
-    css(){
-      return /*css*/`<style> 
+    css() {
+        return /*css*/ `<style> 
 
         .table-bpla-el-name{
 
@@ -75,10 +75,11 @@ class Tableroute extends HTMLElement {
         }
     </style>`
     }
-    html(){
-        return /*html*/`
-            <form class="table-bpla-el" id="editrouteSubmit"  action="/api/getRoute" method="post">
-              <button type="submit" class="table-bpla-el-container">
+    html() {
+        return /*html*/ `
+        <link rel="stylesheet" href="static/css/bootstrap.min.css">
+            <form class="table-bpla-el" id="editrouteSubmit"  action="/route" method="post">
+              <button type="submit" class="table-bpla-el-container" >
                 <div class="more"  >
                   <svg width="5" height="20" viewBox="0 0 5 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="2.5" cy="3" r="2.5" fill="white"/>
@@ -88,13 +89,13 @@ class Tableroute extends HTMLElement {
                 </div>
                 <p class="table-bpla-el-name"></p>
               </button>
-              <input type="hidden"  id="hiddenRoadName" name="name" >
+              <input type="hidden" class="hiddenRoad"  id="hiddenRoadName" name="name">
             </form>
            
         `
     }
-  }
-  
+}
+
 if (!customElements.get('bpla-table-route')) {
-    customElements.define('bpla-table-route',Tableroute);
+    customElements.define('bpla-table-route', Tableroute);
 }

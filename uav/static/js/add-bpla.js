@@ -1,20 +1,20 @@
 class AddBpla extends HTMLElement {
-    constructor(){
-      super();
-      this.innerHTML = this.render();
+    constructor() {
+        super();
+        this.innerHTML = this.render();
     }
-  
+
     static get observedAttributes() { return ['type']; }
-  
+
     connectedCallback() {
 
     }
 
-    render(){
-      return `${this.css()}${this.html()} `;
+    render() {
+        return `${this.css()}${this.html()} `;
     }
-    css(){
-      return /*css*/`<style> 
+    css() {
+        return /*css*/ `<style> 
         :host{
           width: 80%;
           height: 32px;
@@ -32,7 +32,7 @@ class AddBpla extends HTMLElement {
         }
 
         .button-add {
-          display: flex;
+          display:  none;
           justify-content: center;
           align-items: center;
 
@@ -80,8 +80,8 @@ class AddBpla extends HTMLElement {
  
     </style>`
     }
-    html(){
-        return /*html*/`
+    html() {
+        return /*html*/ `
           <a  class="button-add" 
               id="newbpla"
               data-bs-toggle="modal" 
@@ -146,8 +146,8 @@ class AddBpla extends HTMLElement {
 </div>
         `
     }
-  }
-  
+}
+
 if (!customElements.get('bpla-add-bpla')) {
-    customElements.define('bpla-add-bpla',AddBpla);
+    customElements.define('bpla-add-bpla', AddBpla);
 }

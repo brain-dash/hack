@@ -10,7 +10,17 @@ from path.path import Path
 from path.algorithms import generate_curvature
 from copy import deepcopy
 
-def plan_path_sec(path_input: Path):
+
+def wrapTo90(degree):
+    percent = degree / 360
+    phi = 90 * percent
+    return phi
+
+
+
+def plan_path_sec(path_input: Path, vel):
+    #vel speed from 0 to 150 km/h
+
     path = copy.deepcopy(path_input)
 
     for i in range(len(path.points)):
@@ -19,9 +29,9 @@ def plan_path_sec(path_input: Path):
 
     path_result = Path()
     directions = path.get_angles()
-    # print(directions)
 
     path_two_points = []
+    vel *= 0.1
     for i in range(len(path)):
         path_two_points.clear()
         directions = path.get_angles()
@@ -32,15 +42,16 @@ def plan_path_sec(path_input: Path):
         else:
             end_direction = start_direction
 
-            # User's waypoints: [x, y, heading (degrees)]
+        # User's waypoints: [x, y, heading (degrees)]
         pt1 = Waypoint(path[i].start.x, path[i].start.y, start_direction)
         pt2 = Waypoint(path[i].end.x, path[i].end.y, end_direction)
 
-        param = calcDubinsPath(pt1, pt2, 10, 30)
+        angle = (path.get_angles())[i]
+        angle = wrapTo90(angle) + 5
+        print("ass1", vel)
+        param = calcDubinsPath(pt1, pt2, vel, 10)
         path_trajectory = dubins_traj(param, 1)
         path_trajectory = np.delete(path_trajectory, -1, 1)
-        # print(f"wp1: x = {pt1.x}, y = {pt1.y}, dir = {pt1.psi}")
-        # print(f"wp2: x = {pt2.x}, y = {pt2.y}, dir = {pt2.psi}")
 
         for el in path_trajectory:
             path_two_points.append(Point(x=el[0], y=el[1]))
@@ -122,7 +133,7 @@ def calcDubinsPath(wpt1, wpt2, vel, phi_lim):
     psi2 = headingToStandard(wpt2.psi)*math.pi/180
 
     # Do math
-    param.turn_radius = (vel*vel)/(9.8*math.tan(phi_lim*math.pi/180))
+    param.turn_radius = ((vel*vel)/(9.8*math.tan(phi_lim*math.pi/180)))
     dx = wpt2.x - wpt1.x
     dy = wpt2.y - wpt1.y
     D = math.sqrt(dx*dx + dy*dy)

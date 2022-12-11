@@ -30,7 +30,7 @@ urlpatterns = [
     path('list-route', views.listRoute, name='list-route'),
     path('listTasks', views.listTasks, name='listTasks'),
     path('select', views.select, name='select'),
-    path('route', views.route, name='route'),
+    path('route', views.RedirectToOneRoute, name='route'),
     path('view', views.view, name='view'),
 
 #-------------------Api-----------------------------------------------------------#
@@ -42,6 +42,7 @@ urlpatterns = [
     path('api/getUav', views.apiGetUav, name='apiGetUav'), 
     path('api/getRoute', views.apiGetRoute, name='apiGetRoute'),
     path('api/saveRoute', views.apiSaveRoute,name = 'apiSaveRoute'),
-    path('api/OptimizeRoute', views.apiOptimizeRoute, name='apiOptimizeRoute')
+    path('api/OptimizeRoute', views.apiOptimizeRoute, name='apiOptimizeRoute'),
+    path('api/CreateUav', views.apiCreateUav, name='apiCreateUav'),
 ]
 

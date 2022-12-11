@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -21,31 +21,34 @@
 
     <title>Управление БПЛА</title>
 </head>
+
 <body>
     <header class="header-secondary">
         <bpla-prev></bpla-prev>
-        <bpla-account><p>{{user}}</p></bpla-account>
+        <bpla-account>
+            <p>{{user}}</p>
+        </bpla-account>
     </header>
     <h1> Используемые БПЛА </h1>
 
     <div class="bpla-list-container">
-        <bpla-table-route name="Маршрут 1"> </bpla-table-route>
-        <bpla-table-route name="Маршрут 2"> </bpla-table-route>
+
     </div>
     <bpla-add-route></bpla-add-route>
     <script>
-        (async () =>{
-        let response = await fetch('/api/getRoute');
-        let json = await response.json(); // прочитать тело ответа как текст
-        const container = document.querySelector(".bpla-list-container");
-        json.forEach(element => {
-            const route = document.createElement("bpla-table-route");
-            route.setAttribute("status",element.status);
-            route.setAttribute("name",element.name);
-            container.appendChild(route)
-            
-        });
-    })()
+        (async() => {
+            let response = await fetch('/api/getRoute');
+            let json = await response.json(); // прочитать тело ответа как текст
+            const container = document.querySelector(".bpla-list-container");
+            json.forEach(element => {
+                const route = document.createElement("bpla-table-route");
+                //route.setAttribute("status",element.status);
+                route.setAttribute("name", element.name);
+                container.appendChild(route)
+
+            });
+        })()
     </script>
 </body>
+
 </html>

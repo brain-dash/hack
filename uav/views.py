@@ -23,13 +23,14 @@ from predict import predict
 @login_required
 def apiGetUav(request):
     uavs = Uav.objects.all().select_related(
-        'status').values('name', 'status__status')
+        'status').values('name', 'status__status', 'velocity')
     context = []
     for uav in uavs:
         context.append(
             {
                 "name": uav['name'],
                 "status": uav['status__status'],
+                "velocity" : uav['velocity']
             }
         )
     context = json.dumps(context, ensure_ascii=False)
@@ -57,8 +58,8 @@ def apiGetRoute(request):
     for route in routes:
         context.append(
             {
-                'id': route.id,
-                'points': route.points,
+                'name': route.name,
+                'points': json.loads(route.points),
                 'time_create': route.on_create,
             }
         )
@@ -98,6 +99,37 @@ def apiGetCharacteristics(request):
     return HttpResponse(context, content_type="application/json")
 
 
+
+@csrf_exempt
+@login_required
+def RedirectToOneRoute(request):
+    
+    route = Route.objects.filter(name = request.POST['name'])[0]
+    
+    count_points = len(json.loads(route.points))
+    context =   {
+            'name' : route.name, 
+            'points' : json.loads(route.points),
+            'count' : count_points
+        }
+    
+    #context = json.dumps(context, ensure_ascii=False)
+    return render(request, 'route.html', context = context)
+
+@csrf_exempt
+@login_required
+def apiCreateUav(request):
+    data = request.POST
+    uav = Uav(
+        name = data['bpla-name'],
+        velocity = data['bpla-velocity'],
+        maximum_gforce = data['bpla-gforce'],
+        volume = data['bpla-volume'],
+        
+    )
+
+    uav.save()
+    return redirect('listbpla')
 @csrf_exempt
 @login_required
 def apiChangeCharacteristics(request):
@@ -183,7 +215,7 @@ def apiOptimizeRoute(request):
     data = json.loads(request.body)
     points = data['route']
 
-    optimize_points = json.dumps(predict(points, wetzel=False, tsp=True))
+    optimize_points = json.dumps(predict(points,34, wetzel=False, tsp=True, overlapping=False))
     return HttpResponse(optimize_points, content_type="application/json")
 
 
@@ -272,4 +304,5 @@ def select(request):
 
 
 def view(request):
+    
     return render(request, 'view.html')

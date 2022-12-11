@@ -106,6 +106,7 @@ function init() {
     };
 
     async function sendSimplePath() {
+        console.log(sendCoord)
         let dict = {
             route: sendCoord
         };
