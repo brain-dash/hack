@@ -24,7 +24,6 @@ class Uav(models.Model):
     name = models.CharField("Название БПЛА", max_length=255, unique=True)
     velocity = models.IntegerField("Скорость БПЛА", null=False)
     maximum_gforce = models.IntegerField("Максимальная перегрузка БПЛА", null=False)
-    volume = models.IntegerField("Объем топлива БПЛА", null=False)
     
     def __str__(self) -> str:
         return self.name

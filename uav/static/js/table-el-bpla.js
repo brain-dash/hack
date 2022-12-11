@@ -33,7 +33,7 @@ class TableBpla extends HTMLElement {
         console.log(`Загружено: ${xhr.status} ${xhr.response}`);
           this.shadowRoot.querySelector("#bpla-gforce").value = xhr.responce.maximum_gforce;
           this.shadowRoot.querySelector("#bpla-velocity").value = xhr.responce.velocity;
-          this.shadowRoot.querySelector("#bpla-volume").value = xhr.responce.volume;
+          
         };
       })
 
@@ -70,7 +70,7 @@ class TableBpla extends HTMLElement {
        console.log(xhr.response);
        this.shadowRoot.querySelector("#bpla-gforce").value = xhr.response.maximum_gforce;
        this.shadowRoot.querySelector("#bpla-velocity").value = xhr.response.velocity;
-       this.shadowRoot.querySelector("#bpla-volume").value = xhr.response.volume;
+       
       };
     }
     closeModal =() =>{
@@ -338,10 +338,7 @@ p{
                     <label for="bpla-angle" class="col-form-label">G-force</label>
                     <input type="text" class="form-control" id="bpla-gforce" name="bpla-gforce">
                   </div>
-                  <div class="mb-3">
-                    <label for="bpla-angle" class="col-form-label">Масса</label>
-                    <input type="text" class="form-control" id="bpla-volume"  name="bpla-volume">
-                  </div>
+
                 </div>
                 <div class="modal-footer">
                   <input type="submit" class="btn btn-primary btn-modal-close"></button>
