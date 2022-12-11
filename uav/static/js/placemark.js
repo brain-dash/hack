@@ -89,7 +89,7 @@ function init() {
 
             let distance = polyline.geometry.getDistance();
             let flightTime = distance / (speadUAV.value / 3.6);
-            flight_time.innerHTML = `${Math.round(flightTime)} секунд`
+            flight_time.innerHTML = `${Math.round(flightTime/60)} минут`
 
 
             if (typeof animatedLine === 'object') {
