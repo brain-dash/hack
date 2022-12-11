@@ -8,7 +8,6 @@ from path.path import Path
 
 
 def find_shortest_path(path: Path, coordinates=True, openpath=False):
-    distance_arr = []
     if coordinates:
         source = path.get_coords_list()
         distance_arr = great_circle_distance_matrix(source)
@@ -16,8 +15,7 @@ def find_shortest_path(path: Path, coordinates=True, openpath=False):
         distance_m = distance_matrix(path)
         distance_arr = np.array(distance_m)
         if openpath:
-            distance_arr[:, 0] = 0 #open path tsp
-
+            distance_arr[:, 0] = 0
     if len(path) > 3:
         permutation, distance = solve_tsp_simulated_annealing(distance_arr)
     else:

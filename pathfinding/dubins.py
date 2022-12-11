@@ -1,13 +1,9 @@
-import copy
-
-import matplotlib.pyplot as plt
 import math
 import numpy as np
 from enum import Enum
 from path.point import Point
-from path.vector import Vector
 from path.path import Path
-from path.algorithms import generate_curvature
+import copy
 from copy import deepcopy
 
 
@@ -15,7 +11,6 @@ def wrapTo90(degree):
     percent = degree / 360
     phi = 90 * percent
     return phi
-
 
 
 def plan_path_sec(path_input: Path, vel):
@@ -116,37 +111,32 @@ def wrapTo180(angle):
 
 
 def headingToStandard(hdg):
-    # Convert NED heading to standard unit cirlce...degrees only for now (Im lazy)
     thet = wrapTo360(90 - wrapTo180(hdg))
     return thet
 
 
 def calcDubinsPath(wpt1, wpt2, vel, phi_lim):
-    # Calculate a dubins path between two waypoints
     param = Param(wpt1, 0, 0)
     tz        = [0, 0, 0, 0, 0, 0]
     pz        = [0, 0, 0, 0, 0, 0]
     qz        = [0, 0, 0, 0, 0, 0]
     param.seg_final = [0, 0, 0]
-    # Convert the headings from NED to standard unit cirlce, and then to radians
+
     psi1 = headingToStandard(wpt1.psi)*math.pi/180
     psi2 = headingToStandard(wpt2.psi)*math.pi/180
 
-    # Do math
     param.turn_radius = ((vel*vel)/(9.8*math.tan(phi_lim*math.pi/180)))
     dx = wpt2.x - wpt1.x
     dy = wpt2.y - wpt1.y
     D = math.sqrt(dx*dx + dy*dy)
-    d = D/param.turn_radius # Normalize by turn radius...makes length calculation easier down the road.
+    d = D/param.turn_radius
 
-    # Angles defined in the paper
     theta = math.atan2(dy,dx) % (2*math.pi)
     alpha = (psi1 - theta) % (2*math.pi)
     beta  = (psi2 - theta) % (2*math.pi)
     best_word = -1
     best_cost = -1
 
-    # Calculate all dubin's paths between points
     tz[0], pz[0], qz[0] = dubinsLSL(alpha,beta,d)
     tz[1], pz[1], qz[1] = dubinsLSR(alpha,beta,d)
     tz[2], pz[2], qz[2] = dubinsRSL(alpha,beta,d)
@@ -154,7 +144,6 @@ def calcDubinsPath(wpt1, wpt2, vel, phi_lim):
     tz[4], pz[4], qz[4] = dubinsRLR(alpha,beta,d)
     tz[5], pz[5], qz[5] = dubinsLRL(alpha,beta,d)
 
-    # Now, pick the one with the lowest cost
     for x in range(6):
         if tz[x] != -1:
             cost = tz[x] + pz[x] + qz[x]
@@ -263,7 +252,7 @@ def dubinsLRL(alpha, beta, d):
 
 
 def dubins_traj(param,step):
-    # Build the trajectory from the lowest-cost path
+
     x = 0
     i = 0
     length = (param.seg_final[0]+param.seg_final[1]+param.seg_final[2])*param.turn_radius
@@ -278,15 +267,14 @@ def dubins_traj(param,step):
 
 
 def dubins_path(param, t):
-    # Helper function for curve generation
     tprime = t/param.turn_radius
     p_init = np.array([0,0,headingToStandard(param.p_init.psi)*math.pi/180])
-    #
+
     L_SEG = 1
     S_SEG = 2
     R_SEG = 3
     DIRDATA = np.array([[L_SEG,S_SEG,L_SEG],[L_SEG,S_SEG,R_SEG],[R_SEG,S_SEG,L_SEG],[R_SEG,S_SEG,R_SEG],[R_SEG,L_SEG,R_SEG],[L_SEG,R_SEG,L_SEG]])
-    #
+
     types = DIRDATA[param.type.value-1][:]
     param1 = param.seg_final[0]
     param2 = param.seg_final[1]
@@ -307,7 +295,6 @@ def dubins_path(param, t):
     return end_pt
 
 def dubins_segment(seg_param, seg_init, seg_type):
-    # Helper function for curve generation
     L_SEG = 1
     S_SEG = 2
     R_SEG = 3
@@ -326,39 +313,3 @@ def dubins_segment(seg_param, seg_init, seg_type):
         seg_end[2] = seg_init[2]
 
     return seg_end
-
-def main():
-    # User's waypoints: [x, y, heading (degrees)]
-    pt1 = Waypoint(100.,100.,0.0)
-    pt2 = Waypoint(300.,300.,45.0)
-    pt3 = Waypoint(500.,100.,45.0)
-    pt4 = Waypoint(700.,300.,116.56505117707799)
-    pt5 = Waypoint(600.,500.,116.56505117707799)
-    Wptz = [pt1, pt2, pt3, pt4, pt5]
-    # Run the code
-    i = 0
-    while i < len(Wptz)-1:
-        print(f"wp1: x = {Wptz[i].x}, y = {Wptz[i].y}, dir = {Wptz[i].psi}")
-        print(f"wp2: x = {Wptz[i+1].x}, y = {Wptz[i+1].y}, dir = {Wptz[i+1].psi}")
-
-        param = calcDubinsPath(Wptz[i], Wptz[i+1], 10, 10)
-        path = dubins_traj(param,1)
-
-        # Plot the results
-        plt.plot(Wptz[i].x, Wptz[i].y, 'kx')
-        plt.plot(Wptz[i + 1].x, Wptz[i + 1].y, 'kx')
-        plt.plot(path[:, 0], path[:, 1], 'b-')
-        # print("path0: ", path[:,0])
-        # print("path1: ", path[:, 1])
-
-        i += 1
-    plt.grid(True)
-    plt.axis("equal")
-    plt.title('Dubin\'s Curves Trajectory Generation')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.show()
-
-
-if __name__ == '__main__':
-    main()
