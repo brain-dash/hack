@@ -94,6 +94,11 @@ class TableBpla extends HTMLElement {
           this.shadowRoot.querySelector(".status-type").style.boxShadow = "0 0 4px 0 #FFDB5E";
           this.shadowRoot.querySelector(".status-text").innerHTML = "Ожидает команды";
         }
+        else{
+          this.shadowRoot.querySelector(".status-type").style.background = "#5EFFB1";
+          this.shadowRoot.querySelector(".status-type").style.boxShadow = "0 0 4px 0 #5EFFB1";
+          this.shadowRoot.querySelector(".status-text").innerHTML = "В пути";
+        }
       }
     }
     
