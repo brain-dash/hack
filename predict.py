@@ -5,10 +5,8 @@ from path.point import Point
 from pathfinding.dubins2 import plan_path_sec
 from copy import deepcopy
 
-def predict(points, radius=0.01, tsp=True, wetzel=True):
-    # curvature = 600.
-    # radius = 0.005
 
+def predict(points, vel, radius=0.005, tsp=True, wetzel=True):
     if isinstance(points[0], Point):
         path = Path(points)
     elif isinstance(points, list):
@@ -19,9 +17,10 @@ def predict(points, radius=0.01, tsp=True, wetzel=True):
     path_final = copy.deepcopy(path)
     path_final.optimize(path_final, radius=radius, tsp=tsp, wetzel=wetzel, n=2)
 
+    path_final.remove_overlapping(radius)
     path_final.remove_straight_lines()
 
-    path_final = plan_path_sec(path_final)
+    path_final = plan_path_sec(path_final, vel)
     return path_final.get_coords_list()
 
 if __name__ == '__main__':

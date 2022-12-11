@@ -8,7 +8,6 @@ from path.path import Path
 
 
 def find_shortest_path(path: Path, coordinates=True, openpath=False):
-    # distance_m = []
     distance_arr = []
     if coordinates:
         source = path.get_coords_list()

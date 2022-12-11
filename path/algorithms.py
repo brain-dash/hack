@@ -5,9 +5,8 @@ import math
 
 
 def find_closest_points(path: Path, radius, n):
-
     result = []
-    points = list(path.points)
+    points = list(path.points[1:len(path.points)])
 
     i = 0
     while len(points) > 0:
@@ -23,7 +22,6 @@ def find_closest_points(path: Path, radius, n):
         closest_points = []
         indexes = []
         number = n
-
         if n > len(points):
             number = len(points)
         for k in range(number):
@@ -37,12 +35,8 @@ def find_closest_points(path: Path, radius, n):
         result.append(closest_points)
         indexes.sort(reverse=True)
 
-        # for m in range(len(indexes)):
         for index in indexes:
-            if points[index].type != 'start' or points[index].type != 'finish':
-                del points[index]
-            # if in >= len(indexes):
-            #     break
+            del points[index]
         i += 1
     return result
 

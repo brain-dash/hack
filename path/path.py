@@ -39,9 +39,11 @@ class Path:
 
     def update_start(self):
         self.start = self._points[0]
+        self._points[0].type = 'start'
         self.start.type = 'start'
     def update_finish(self):
         self.finish = self._points[len(self._points) - 1]
+        self._points[len(self._points) - 1].type = 'finish'
         self.finish.type = 'finish'
 
     def x(self):
@@ -117,8 +119,10 @@ class Path:
                                     y=circle.center.y))
 
         self._points = new_points
+        self._points.insert(0, self.start)
+        self.update_finish()
 
-    def optimize(self, path: Path, radius=0, n=3, tsp=True, wetzel=True, coordinates=True, openpath=False):
+    def optimize(self, path: Path, radius=0, n=2, tsp=True, wetzel=True, coordinates=True, openpath=False):
         if wetzel:
             self.optimize_wetzel(path, radius, n)
         if tsp:
@@ -137,7 +141,7 @@ class Path:
                 finish = point
             else:
                 points_optimized.append(point)
-        # points_optimized.append(finish)
+        points_optimized.append(finish)
         self._points = points_optimized
         self.create_vectors()
 
@@ -148,10 +152,12 @@ class Path:
                     break
                 angle_between = Vector.angle(self._vectors[i], self._vectors[i + 1])
                 if 0 <= angle_between <= 15:
-                    del self._points[i + 1]
+                    if self._points[i + 1].type != 'finish':
+                        del self._points[i + 1]
                 self.create_vectors()
+        self.create_vectors()
 
-    def remove_overlaping(self, radius, iterations=1):
+    def remove_overlapping(self, radius, iterations=1):
         for j in range(iterations):
             new_points = []
             for i in range(len(self._points) - 1):
@@ -160,11 +166,11 @@ class Path:
                 c1 = Circle(self._points[i], radius)
                 c2 = Circle(self._points[i + 1], radius)
                 p1, p2, is_found = c1.intersection(c2)
-
                 if is_found:
-                    self._points[i] = p1
-                    del self._points[i + 1]
-                    # self._points.append(p1)
+                    mid_p = Circle.mid_point(p1, p2)
+                    if self._points[i].type != 'start' and self._points[i + 1].type != 'finish':
+                        self._points[i] = mid_p
+                        del self._points[i + 1]
         self.create_vectors()
 
 
