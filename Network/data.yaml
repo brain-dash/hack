@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['0']
+
+roboflow:
+  workspace: boonwire-sajfk
+  project: 123-vbgdf
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/boonwire-sajfk/123-vbgdf/dataset/1
