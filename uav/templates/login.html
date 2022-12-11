@@ -27,18 +27,18 @@
         {%csrf_token%}
         <div class="mb-3">
             <label for="login" class="form-label">Логин</label>
-            <input type="text" class="form-control" id="login" placeholder="name" name="username">
+            <input type="text" class="form-control" id="login" placeholder="Имя пользователя"value="admin" name="username">
         </div>
         <div class="col-auto">
             <label for="password" class="form-label">Пароль</label>
-            <input type="password" id="password" class="form-control" aria-describedby="passwordHelpInline" name="password">
+            <input type="password" id="password" class="form-control" aria-describedby="passwordHelpInline"value="admin" name="password">
         </div>
         <div class="col-auto">
             <span id="passwordHelpInline" class="form-text">
-            Must be 8-20 characters long.
+            Длина пароля должна составлять 8 - 20 символов.
             </span>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary button-like">Войти </button>
     </form>
     {% if messages %}
         {% for message in messages %}
