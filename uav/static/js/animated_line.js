@@ -2,7 +2,7 @@ ymaps.modules.define('AnimatedLine', [
     'util.defineClass',
     'Polyline',
     'vow'
-], function(provide, defineClass, Polyline, vow) {
+], function (provide, defineClass, Polyline, vow) {
     /**
      * @fileOverview Анимированная линия.
      */
@@ -18,7 +18,7 @@ ymaps.modules.define('AnimatedLine', [
         // Вычислим длину переданной линии.
         let distance = 0;
         let previousElem = geometry[0];
-        this.geometry.getCoordinates().forEach(function(elem) {
+        this.geometry.getCoordinates().forEach(function (elem) {
             distance += getDistance(elem, previousElem);
             previousElem = elem;
         });
@@ -29,46 +29,54 @@ ymaps.modules.define('AnimatedLine', [
     }
     defineClass(AnimatedLine, Polyline, {
         // Анимировать линию.
-        start: function(borderCircles, sendCoord, sendSimplePath) {
+        start: function (borderCircles, sendCoord, sendSimplePath, myMap) {
             let value = 0;
             let coords = this._smoothCoords;
             let line = this;
             let loopTime = this._loopTime;
-            let parentMap = this.getParent().getMap();
             let p = new ymaps.Placemark([], {}, {
                 iconLayout: 'default#image',
                 iconImageHref: 'static/img/uav.svg',
                 iconImageSize: [30, 30],
                 iconImageOffset: [-15, -15]
             });
-            parentMap.geoObjects.add(p);
+            myMap.geoObjects.add(p);
 
             // Будем добавлять по одной точке каждые 25 мс.
             function loop(value, currentTime, previousTime) {
                 if (value < coords.length) {
                     if (!currentTime || (currentTime - previousTime) > loopTime) {
                         line.geometry.set(value, coords[value]);
-
-                        let circle = borderCircles.searchContaining(coords[value]).getIterator().getNext();
-
-                        if (Object.keys(circle).length != 0) {
+                        let iterator = borderCircles.searchContaining(coords[value]).getIterator();
+                        let circle;
+                        while ((circle = iterator.getNext()) != iterator.STOP_ITERATION) {
                             let visitedPoinCoord = circle.geometry.getCoordinates();
-                            if (visitedPoinCoord == sendCoord[1]) {
-                                let x = coords[value][0] - (Math.random() - 0.5)
-                                let y = coords[value][1] - (Math.random() - 0.5)
-                                let newUAVCoord = [x, y];
-                                ymaps.geoQuery(circle).removeFromMap(parentMap);
-                                borderCircles = borderCircles.slice(1);
-                                sendCoord = sendCoord.slice(1);
-                                sendCoord[0] = newUAVCoord;
-                                sendSimplePath()
+                            for (let coord of sendCoord) {
+                                if (visitedPoinCoord == coord) {
+                                    let x = coords[value][0] - (Math.random() - 0.5) / 500.0;
+                                    let y = coords[value][1] - (Math.random() - 0.5) / 500.0;
+                                    let newUAVCoord = [x, y];
+
+                                    let index = borderCircles.indexOf(circle);
+                                    let delObj = borderCircles.get(index);
+                                    borderCircles = borderCircles.remove(delObj);
+
+                                    myMap.geoObjects.remove(p);
+
+                                    sendCoord.splice(sendCoord.indexOf(coord), 1);
+                                    sendCoord[0] = newUAVCoord;
+
+                                    ymaps.geoQuery(circle).removeFromMap(myMap);
+                                    sendSimplePath(borderCircles, sendCoord, sendSimplePath, myMap);
+                                    // break;
+                                }
                             }
                         }
                         p.geometry.setCoordinates(coords[value]);
                         value++;
                         previousTime = currentTime;
                     }
-                    requestAnimationFrame(function(time) {
+                    requestAnimationFrame(function (time) {
                         loop(value, time, previousTime || time)
                     });
                 } else {
@@ -80,15 +88,15 @@ ymaps.modules.define('AnimatedLine', [
             loop(value);
         },
         // Убрать отрисованную линию.
-        reset: function() {
+        reset: function () {
             this.geometry.setCoordinates([]);
         },
         // Запустить полный цикл анимации.
-        animate: function(borderCircles, sendCoord, sendSimplePath) {
+        animate: function (borderCircles, sendCoord, sendSimplePath, myMap) {
             this.reset();
-            this.start(borderCircles, sendCoord, sendSimplePath);
+            this.start(borderCircles, sendCoord, sendSimplePath, myMap);
             let deferred = vow.defer();
-            this.events.once('animationfinished', function() {
+            this.events.once('animationfinished', function () {
                 deferred.resolve();
             });
             return deferred.promise();

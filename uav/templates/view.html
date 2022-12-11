@@ -37,7 +37,7 @@
         </a>
         <div>
             <p slot="name">Список БПЛА</p>
-            <select id="choice-bpla">
+            <select id="choice-uav">
                 <option id="select-bpla" value="" disabled selected hidden>Выберите БПЛА</option>
             </select>
         </div>
@@ -111,15 +111,21 @@
     </div>
     <bpla-view>
         <div id="map" slot="map">
-            <input id="start" type="button" value="Начать построение">
-            <input id="stop" type="button" value="Закончить построение">
+
+            <label for="name-route" >Название маршрута</label>
+            <input id="name-route" type="text" >
+
+            <input id="start" type="button" value="Начать построение" hidden="false">
+            <input id="stop" type="button" value="Закончить построение" hidden="false">
 
             <input id="coords" name="coords" type="hidden" value="">
 
             <label for="spead">скорость в м/с</label>
             <input id="spead" type="number">
 
-            <input id="go" type="button" value="Начать маршрут">
+
+
+            <input id="go" type="button" value="Начать маршрут" hidden="true">
         </div>
         <div slot="video">
             Видео
@@ -133,64 +139,16 @@
 
         <div slot="total">
             <p>Ожидаемое время в пути</p>
-            <p>20 мин</p>
+            <p id="flightTime"></p>
         </div>
-        <div slot="fromstart">
+        {% comment %} <div slot="fromstart">
             <p>Время в пути</p>
-            <p>11 мин</p>
-        </div>
+            <p id="airTime"></p>
+        </div> {% endcomment %}
     </bpla-chars>
     <bpla-button id="btn-finish">
         <a href="{% url 'app' %}"> Закончить задачу</a>
     </bpla-button>
-    <script>
-        let selectElement1 = document.getElementById('choice-bpla');
-
-        (async() => {
-            let response = await fetch('/api/getUav');
-            let json = await response.json(); // прочитать тело ответа как текст
-            json.forEach(element => {
-                option = document.createElement('option');
-                option.text = element.name;
-                option.value = element.velocity;
-                selectElement1.add(option)
-            });
-
-        })()
-
-        let selectElement2 = document.getElementById('choice-route');
-        (async() => {
-            let response = await fetch('/api/getRoute');
-            let json = await response.json(); // прочитать тело ответа как текст
-            json.forEach(element => {
-                option = document.createElement('option');
-                option.value = option.text = element.name;
-                selectElement2.add(option)
-            })
-            option = document.createElement('option');
-            option.text = 'Создать маршрут'
-            option.id = 'CreateRoute'
-            option.value = 'Создать маршрут'
-            selectElement2.add(option)
-            console.log(json)
-        })()
-
-        let select = document.getElementById('choice-bpla');
-        select.addEventListener('change', function() {
-            document.getElementById('spead').value = this.value;
-
-        });
-        let select1 = document.getElementById('choice-route');
-        select1.addEventListener('change', function() {
-            if (this.value == 'Создать маршрут') {
-                document.getElementById('start').hidden = true;
-                document.getElementById('stop').hidden = true;
-            } else {
-                document.getElementById('start').hidden = false;
-                document.getElementById('stop').hidden = false;
-            }
-        });
-    </script>
 </body>
 
 </html>

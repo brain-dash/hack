@@ -50,7 +50,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-*.pyc
 
 # Django stuff:
 *.log
@@ -187,3 +186,7 @@ fabric.properties
 __pycache__
 .vscode
 **/.idea/workspace.xml **/.idea/tasks.xml
+
+# custom
+*.pyc
+*.sqlite3

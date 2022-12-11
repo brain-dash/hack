@@ -93,7 +93,6 @@ def apiGetCharacteristics(request):
         'name': uav.name,
         'velocity': uav.velocity,
         'maximum_gforce': uav.maximum_gforce,
-        'volume': uav.volume
     }
     context = json.dumps(context, ensure_ascii=False)
     return HttpResponse(context, content_type="application/json")
@@ -124,7 +123,7 @@ def apiCreateUav(request):
         name = data['bpla-name'],
         velocity = data['bpla-velocity'],
         maximum_gforce = data['bpla-gforce'],
-        volume = data['bpla-volume'],
+
         
     )
 
@@ -135,12 +134,12 @@ def apiCreateUav(request):
 def apiChangeCharacteristics(request):
     data = request.POST
 
-    #data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10, 'volume' : 5}
+    #data = {'name' : 'Тест1', 'velocity' : 20, 'maximum_gforce' : 10}
     uav = Uav.objects.filter(name=data['name'])[0]
     uav.name = data['change-name']
     uav.velocity = data['bpla-velocity']
     uav.maximum_gforce = data['bpla-gforce']
-    uav.volume = data['bpla-volume']
+
 
     uav.save()
     result = True
@@ -169,14 +168,14 @@ def apiCreateProblem(request):
 @login_required
 def apiSaveRoute(request):
 
-    #data = json.loads(request.body)["data"]
+    data = json.loads(request.body)
     user_ = User.objects.get(pk=1)
-    uav_route_name = json_['uav_name']
+    uav_route_name = data['uav_name']
     uav_name = Uav.objects.filter(name=uav_route_name)[0]
 
-    route_name = json_['route_name']
+    route_name = data['route_name']
 
-    route_points = json_['route']
+    route_points = data['route']
 
     route = Route(
         name=route_name,
@@ -196,13 +195,11 @@ def apiCreateVua(request):
     uav_name = data['name']
     uav_velocity = data['velocity']
     uav_maximum_gforce = data['maximum_gforce']
-    uav_volume = data['volume']
 
     uav = Uav(
         name=uav_name,
         velocity=uav_velocity,
         maximum_gforce=uav_maximum_gforce,
-        volume=uav_volume
     )
     uav.save()
     result = True
@@ -212,8 +209,8 @@ def apiCreateVua(request):
 @csrf_exempt
 @login_required
 def apiOptimizeRoute(request):
-    data = json.loads(request.body)
-    points = data['route']
+    points = json.loads(request.body)['route']
+    print(points)
 
     optimize_points = json.dumps(predict(points,34, wetzel=False, tsp=True, overlapping=False))
     return HttpResponse(optimize_points, content_type="application/json")
