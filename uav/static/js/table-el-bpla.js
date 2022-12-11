@@ -17,7 +17,7 @@ class TableBpla extends HTMLElement {
       this.modal = this.shadowRoot.querySelector(".modal");
       this.openModalBtn = this.shadowRoot.getElementById("openBplaModal");
       this.submitModalBtn = this.shadowRoot.querySelector(".btn-modal-close");
-      this.span = this.shadowRoot.querySelector(".btn-close");
+      this.span = this.shadowRoot.querySelector(".no-cross");
 
       this.openModalBtn.addEventListener('click',()=>this.getChars());
       this.span.addEventListener('click', ()=>this.closeModal())
@@ -149,9 +149,7 @@ class TableBpla extends HTMLElement {
           margin:10px;
           flex-shrink:0;
         }
-        .status-text{
-
-        }
+        
         /************* */
         /* The Modal (background) */
     .modal {
@@ -194,7 +192,100 @@ class TableBpla extends HTMLElement {
       color: #000;
       text-decoration: none;
       cursor: pointer;
-    }@keyframes animatetop {
+    }
+    
+    
+.modal-content{
+  background-color: #565656!important;;
+  color:white!important;;
+  box-shadow: 0 0 6px 1px black!important;;
+}
+.form-control{
+  background-color: transparent!important;;
+  color:white!important;
+}
+.form-control:focus {
+  color: #212529!important;;
+  background-color: #fff!important;;
+  border-color: #86b7fe!important;;
+  outline: 0!important;;
+  box-shadow: none!important;
+}
+.button-add {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  margin:20px 0;
+
+  background: transparent;
+  border:none;
+  transition: all 0.4s linear;
+  cursor: pointer;
+  text-decoration:none;
+  color: white;
+}
+.button-add svg path{
+  transition: all 0.2s linear;
+}
+.button-add p{
+  border-bottom:0px solid;
+  color: white;
+}
+p{
+  margin: 0;
+}
+
+.button-add:hover p{
+  border-bottom:1px solid;
+}
+.button-add:hover svg path{
+  fill: var(--grey)
+}
+.button-add:active svg path{
+  fill: var(--light-blue);
+}
+.svg-container{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:50px;
+  height:50px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid #FFFFFF;
+  box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.64);
+  border-radius: 25px;
+  margin-right:20px;
+}
+.form-control::placeholder {
+  color:#a9a9a9!important;;
+}
+.form-control:focus{
+  color: white!important;;
+  background-color: transparent!important;;
+  box-shadow: none!important;;
+  border-bottom: 1px white solid !important;
+  border-radius: 0!important;;
+}
+.modal-header{
+  border-bottom: 1px solid var(--light-blue)!important;
+}
+.modal-footer{
+  border-top: 1px solid var(--light-blue) !important;
+
+}
+.no-cross{
+  background:transparent;
+  border:none;
+}
+    @keyframes animatetop {
       from {top: -300px; opacity: 0}
       to {top: 0; opacity: 1}
     }
@@ -222,10 +313,15 @@ class TableBpla extends HTMLElement {
               <form class="modal-content" action="/api/changeCharacteristics" method="post" >
                 <div class="modal-header">
                   <svg width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.5053 5.52636L15.7314 0.527234C15.5735 0.360193 15.3856 0.22759 15.1784 0.137093C14.9713 0.0465958 14.7491 0 14.5246 0C14.3002 0 14.0779 0.0465958 13.8708 0.137093C13.6636 0.22759 13.4757 0.360193 13.3178 0.527234L0.501954 13.9477C0.342715 14.1132 0.216368 14.3101 0.130213 14.527C0.0440572 14.7439 -0.000199146 14.9765 6.73631e-07 15.2115V20.2106C6.73631e-07 20.6852 0.180032 21.1403 0.50049 21.4759C0.820948 21.8115 1.25558 22 1.70878 22H6.48268C6.70702 22.0002 6.92918 21.9539 7.13632 21.8636C7.34346 21.7734 7.53147 21.6411 7.6895 21.4744L20.5053 8.05389C20.8223 7.71701 21 7.26306 21 6.79012C21 6.31719 20.8223 5.86324 20.5053 5.52636ZM2.06121 14.8424L11.1071 5.36979L12.8906 7.23747L3.84475 16.7101L2.06121 14.8424ZM1.70878 17.0009L4.7739 20.2106H1.70878V17.0009ZM6.83511 19.8415L5.05158 17.9739L14.0974 8.50124L15.881 10.3689L6.83511 19.8415ZM17.0878 9.10516L12.3139 4.10603L14.5246 1.791L19.2985 6.79012L17.0878 9.10516Z" fill="black"/>
+                    <path d="M20.5053 5.52636L15.7314 0.527234C15.5735 0.360193 15.3856 0.22759 15.1784 0.137093C14.9713 0.0465958 14.7491 0 14.5246 0C14.3002 0 14.0779 0.0465958 13.8708 0.137093C13.6636 0.22759 13.4757 0.360193 13.3178 0.527234L0.501954 13.9477C0.342715 14.1132 0.216368 14.3101 0.130213 14.527C0.0440572 14.7439 -0.000199146 14.9765 6.73631e-07 15.2115V20.2106C6.73631e-07 20.6852 0.180032 21.1403 0.50049 21.4759C0.820948 21.8115 1.25558 22 1.70878 22H6.48268C6.70702 22.0002 6.92918 21.9539 7.13632 21.8636C7.34346 21.7734 7.53147 21.6411 7.6895 21.4744L20.5053 8.05389C20.8223 7.71701 21 7.26306 21 6.79012C21 6.31719 20.8223 5.86324 20.5053 5.52636ZM2.06121 14.8424L11.1071 5.36979L12.8906 7.23747L3.84475 16.7101L2.06121 14.8424ZM1.70878 17.0009L4.7739 20.2106H1.70878V17.0009ZM6.83511 19.8415L5.05158 17.9739L14.0974 8.50124L15.881 10.3689L6.83511 19.8415ZM17.0878 9.10516L12.3139 4.10603L14.5246 1.791L19.2985 6.79012L17.0878 9.10516Z" fill="white"/>
                   </svg>
                   <input type="text" class="modal-title form-control header-editable" id="bpla-name" value=${this.name} id="editBPLALabel" name="change-name">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick = "console.log(this.headerEl.value)"></button>
+                  <button type="button" class="no-cross" data-bs-dismiss="modal" aria-label="Close" >
+                  <svg width="32" height="31" viewBox="0 0 32 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <line x1="1" y1="29.5858" x2="29.5858" y2="1" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="1" y1="-1" x2="41.4264" y2="-1" transform="matrix(-0.707107 -0.707107 -0.707107 0.707107 31 31)" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  </button>
                 </div>
                 <div class="modal-body">
                   <div class="mb-3">
