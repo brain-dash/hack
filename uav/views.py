@@ -209,10 +209,14 @@ def apiCreateVua(request):
 @csrf_exempt
 @login_required
 def apiOptimizeRoute(request):
-    points = json.loads(request.body)['route']
-    print(points)
+    data = json.loads(request.body)
+    points = data['route']
+    vel = data['vel']
+    tsp = data['tsp']
+    wetzel = data['wetzel']
+    overlapping = data['overlapping']
 
-    optimize_points = json.dumps(predict(points,34, wetzel=False, tsp=True, overlapping=False))
+    optimize_points = json.dumps(predict(points,vel = vel, wetzel=wetzel, tsp=tsp, overlapping=overlapping))
     return HttpResponse(optimize_points, content_type="application/json")
 
 

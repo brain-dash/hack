@@ -196,7 +196,58 @@ function init() {
         simplePath.editor.stopDrawing();
     };
 
-    goPathBtn.onclick = function () {
+    async function sendSimplePath() {
+        console.log(sendCoord)
+
+        let dict = {
+            route: sendCoord,
+            tsp: document.querySelector('#tsp').checked,
+            wetzel: document.querySelector('#wetzel').checked,
+            overlapping: document.querySelector('#overlapping').checked,
+            vel: document.getElementById('spead').value
+        };
+        let response = await fetch("http://127.0.0.1:8000/api/OptimizeRoute", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dict)
+        });
+
+        if (response.ok) {
+            let json = await response.json();
+            let optimizedPath = json;
+            let c1 = Math.random(255)
+            let c2 = Math.random(255)
+            let c3 = Math.random(255)
+            myMap.geoObjects.remove(polyline);
+            polyline = new ymaps.Polyline(optimizedPath, {}, {
+                strokeColor: `rgba(${c1},${c2},${c3},1)`,
+                strokeWidth: 4
+            });
+            myMap.geoObjects.add(polyline);
+
+            let distance = polyline.geometry.getDistance();
+            let flightTime = distance / speadUAV.value;
+
+            myMap.geoObjects.remove(animatedLine);
+            animatedLine = new ymaps.AnimatedLine(optimizedPath, {}, {
+                strokeColor: "#dc3545",
+                strokeWidth: 4,
+                animationTime: flightTime * 1000
+            });
+            myMap.geoObjects.add(animatedLine);
+
+            animatedLine.animate(borderCircles, sendCoord, sendSimplePath).then(function() {
+                console.log('Маршрут пройден');
+            });
+
+        } else {
+            alert("Ошибка HTTP: " + response.status);
+        }
+    }
+
+    goPathBtn.onclick = function() {
         simplePath.editor.stopEditing();
         sendCoord = simplePath.geometry.getCoordinates();
         for (let coord of sendCoord.slice(1, -1)) {
