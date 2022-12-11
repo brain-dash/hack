@@ -29,12 +29,10 @@ class Tableroute extends HTMLElement {
     css() {
         return /*css*/ `<style> 
 
-        .table-bpla-el-name{
-
-        }
-        bpla-table-route{
+        :host{
           width:100%;
-          display:flex
+          display:flex;
+        
         }
         bpla-table-bpla:hover, bpla-table-bpla:active{
           background:grey;
@@ -47,6 +45,8 @@ class Tableroute extends HTMLElement {
           align-items: center;
           padding:0 10px;
           color:white;
+          background: none;
+          border: none;
         }
         .table-bpla-el-container:hover{
           background:grey;

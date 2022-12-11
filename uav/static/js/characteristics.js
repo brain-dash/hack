@@ -21,6 +21,14 @@ class Characteristics extends HTMLElement {
           display:flex;
           justify-content: space-between;
         }
+        .progress{
+          
+          box-shadow:0 0 7px 1px black;
+        }
+        .progress-bar {
+          background-color: transparent;
+          background: linear-gradient(57deg, #446778, #7adaff);
+      } 
     </style>`
     }
     html(){

@@ -57,6 +57,9 @@ class View extends HTMLElement {
         p{
           margin: 0 !important; 
         }
+        ::slotted(div)[name=map]{
+          width: 100%;
+        }
     </style>`
     }
     html(){

@@ -71,7 +71,7 @@ class Prev extends HTMLElement {
     }
     html(){
         return /*html*/`
-          <button onclick="history.back()">
+          <button onclick="window.location.href = '/app'">
           <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect class="circle" x="0.5" y="0.5" width="38" height="38" rx="19" fill="transparent"/>
             <path class="arrow" d="M21.45 11.7L13.65 20.475L21.45 29.25" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
