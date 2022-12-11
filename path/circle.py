@@ -13,25 +13,36 @@ class Circle:
         return f"Center={self.center.x}, {self.center.y}, radius={self.radius}"
 
     def intersection(self, c: Circle):
+        x1, y1 = self.center.x, self.center.y
+        x2, y2 = c.center.x, c.center.y
+        r1, r2 = self.radius, c.radius
+
+        dx = x2 - x1
+        dy = y2 - y1
         dist = Point.dist(self.center, c.center)
-
-        dx = c.center.x - self.center.x
-        dy = c.center.y - self.center.y
-
-        if dist > self.radius + c.radius:
-            return None
-        elif dist == 0 and self.radius == c.radius:
-            return None
-        elif dist < math.fabs(c.radius - self.radius):
-            return None
+        # Distance between circle centres
+        if (dist > r1 + r2) or (dist < math.fabs(r2 - r1)) or (dist == 0 and r1 == r2):
+            return None, None, False
         else:
-            ch_dist = (self.radius ** 2 - c.radius ** 2 + dist ** 2) / (2 * dist)
-            hch_d = math.sqrt(self.radius**2 - ch_dist**2)
-            ch_mid_x = self.center.x + (ch_dist * dx) / dist
-            ch_mid_y = self.center.y + (ch_dist * dy) / dist
+            chorddistance = (r1 ** 2 - r2 ** 2 + dist ** 2) / (2 * dist)
+            # distance from 1st circle's centre to the chord between intersects
+            halfchordlength = math.sqrt(r1 ** 2 - chorddistance ** 2)
+            chordmidpointx = x1 + (chorddistance * dx) / dist
+            chordmidpointy = y1 + (chorddistance * dy) / dist
 
-            return Point(coords=[ch_mid_x + (hch_d * dy), ch_mid_y - (hch_d * dx)]), \
-                   Point(coords=[ch_mid_x - (hch_d * dy), ch_mid_y + (hch_d * dx)])
+            p1 = Point(x=chordmidpointx + (halfchordlength * dy) / dist,
+                       y=chordmidpointy - (halfchordlength * dx) / dist)
+
+            p2 = Point(x=chordmidpointx - (halfchordlength * dy) / dist,
+                       y=chordmidpointy + (halfchordlength * dx) / dist)
+
+            theta1 = math.degrees(math.atan2(p1.y - y1, p1.x - x1))
+            theta2 = math.degrees(math.atan2(p2.y - y1, p2.x - x1))
+
+            if theta2 > theta1:
+                return p2, p1, True
+            else:
+                return p1, p2, True
 
 
     @staticmethod

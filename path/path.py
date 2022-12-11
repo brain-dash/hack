@@ -14,25 +14,35 @@ class Path:
         else:
             points_temp = args[0]
             self._points = points_temp
-            self.start = points_temp[0]
-            self.finish = points_temp[len(points_temp) - 1]
+            self.update_start()
+            self.update_finish()
             if len(points_temp) > 1:
                 self.create_vectors()
 
     def append(self, point: Point):
         self._points.append(point)
+        self.update_finish()
         self.create_vectors()
 
     def append(self, coords: list):
         self._points.append(Point(coords=coords))
+        self.update_finish()
         self.create_vectors()
 
     def extend(self, points: list[Point]):
         self._points.extend(points)
+        self.update_finish()
         self.create_vectors()
 
     def pop(self):
         self._points.pop()
+
+    def update_start(self):
+        self.start = self._points[0]
+        self.start.type = 'start'
+    def update_finish(self):
+        self.finish = self._points[len(self._points) - 1]
+        self.finish.type = 'finish'
 
     def x(self):
         path_x = []
@@ -76,7 +86,6 @@ class Path:
         coords_list = []
         for i in range(len(self._points)):
             coords_list.append(self._points[i].list())
-
         return coords_list
 
     @property
@@ -94,7 +103,7 @@ class Path:
     def optimize_tsp(self, path: Path, coordinates=True, openpath=False):
         from pathfinding.tsp import find_shortest_path
         permutation = find_shortest_path(path, coordinates, openpath)
-        self._points = Path.create_permutation(path, permutation)
+        self.create_permutation(permutation)
 
     def optimize_wetzel(self, path: Path, radius, n):
         from path.algorithms import find_closest_points
@@ -116,13 +125,21 @@ class Path:
             self.optimize_tsp(path, coordinates, openpath)
         self.create_vectors()
 
-    @staticmethod
-    def create_permutation(path: Path, permutation: list):
-        points_optimized = []
 
+    def create_permutation(self, permutation: list):
+        points_optimized = []
+        finish = Point()
         for i in range(len(permutation)):
-            points_optimized.append(path.points[permutation[i]])
-        return points_optimized
+            point = self._points[permutation[i]]
+            if point.type == 'start':
+                points_optimized.insert(0, point)
+            elif point.type == 'finish':
+                finish = point
+            else:
+                points_optimized.append(point)
+        # points_optimized.append(finish)
+        self._points = points_optimized
+        self.create_vectors()
 
     def remove_straight_lines(self, iterations=1):
         for j in range(iterations):
@@ -134,5 +151,22 @@ class Path:
                     del self._points[i + 1]
                 self.create_vectors()
 
-    # def remove_overlaping(self, radius):
+    def remove_overlaping(self, radius, iterations=1):
+        for j in range(iterations):
+            new_points = []
+            for i in range(len(self._points) - 1):
+                if i >= len(self._points) - 1:
+                    break
+                c1 = Circle(self._points[i], radius)
+                c2 = Circle(self._points[i + 1], radius)
+                p1, p2, is_found = c1.intersection(c2)
+
+                if is_found:
+                    self._points[i] = p1
+                    del self._points[i + 1]
+                    # self._points.append(p1)
+        self.create_vectors()
+
+
+
 

@@ -25,6 +25,7 @@ def vector_info(vector):
     print("Direction deg:",  np.rad2deg(vector.direction))
 
 
+
 def test_intersection():
     figure, axes = plt.subplots()
 
@@ -32,7 +33,7 @@ def test_intersection():
     c1 = Circle(Point(x=0, y=0.5), radius)
     c2 = Circle(Point(x=0, y=-1), radius)
 
-    p1, p2 = c1.intersection(c2)
+    p1, p2, _ = c1.intersection(c2)
     print(p1)
     print(p2)
 
@@ -52,38 +53,87 @@ def test_intersection():
 
 def test_circles():
     figure, axes = plt.subplots()
-    test_coords = [[44.95298262463785, 37.27123632216752],
+
+    # test_coords1 = [[55.763290828800116, 37.5909048461914],
+    #                 [55.769484573498744, 37.59536804199218],
+    #                 [55.77180697300689, 37.601547851562486],
+    #                 [55.772581075298376, 37.608929290771464],
+    #                 [55.77296812065462, 37.625408782958964],
+    #                 [55.772097263175425, 37.631073608398424],
+    #                 [55.76803300324382, 37.649956359863275],
+    #                 [55.7656135988627, 37.65218795776366],
+    #                 [55.7545792033592, 37.65253128051755],
+    #                 [55.75206214770929, 37.65304626464842],
+    #                 [55.743832173569864, 37.64858306884763],
+    #                 [55.755063233822455, 37.61184753417968],
+    #                 [55.77519355655238, 37.68669189453122],
+    #                 [55.78525480417483, 37.63519348144529],
+    #                 [55.760871128879174, 37.602406158447245],
+    #                 [55.75699929535349, 37.721195831298814],
+    #                 [55.73259786601311, 37.63673843383786],
+    #                 [55.74412267292747, 37.594338073730455],
+    #                 [55.761742238221835, 37.59056152343748],
+    #                 [55.783900557411606, 37.59794296264646],
+    #                 [55.7733551621512, 37.67862380981443],
+    #                 [55.7521873085031, 37.616165931893846],
+    #                 [55.757898835331346, 37.61050110645441],
+    #                 [55.74744319859523, 37.608269508554],
+    #                 [55.73219231337294, 37.60286565566359],
+    #                 [55.70845375895499, 37.62312169814407],
+    #                 [55.730933080633214, 37.65007253432571],
+    #                 [55.76453092343249, 37.6603722169429],
+    #                 [55.75320579095923, 37.67462011123003],
+    #                 [55.763272738479166, 37.68285985732376],
+    #                 [55.757465202629234, 37.59016271376907],
+    #                 [55.76598262463785, 37.58123632216752]]
+    test_coords2 = [[44.95298262463785, 37.27123632216752],
                     [44.95402724519435, 37.28805286767577],
                     [44.95502724519435, 37.29505286767577],
                     [44.95830446995309, 37.30522380426023]]
-
+    test_coords3 = [[55.763290828800116, 37.5909048461914],
+                    [55.769484573498744, 37.59536804199218],
+                    [55.77180697300689, 37.601547851562486],
+                    [55.772581075298376, 37.608929290771464],
+                    [55.77296812065462, 37.625408782958964],
+                    [55.772097263175425, 37.631073608398424],
+                    [55.76803300324382, 37.649956359863275],
+                    [55.7656135988627, 37.65218795776366],
+                    [55.78525480417483, 37.63519348144529],
+                    [55.760871128879174, 37.602406158447245],
+                    [55.75699929535349, 37.721195831298814],
+                    [55.73259786601311, 37.63673843383786],
+                    [55.74412267292747, 37.594338073730455],
+                    [55.763290828800116, 37.5909048461914]]
 
 
     radius = 0.005
-    path_initial = Path.from_list(coords=test_coords)
+    path_initial = Path.from_list(coords=test_coords3)
     plt.scatter(path_initial.x(), path_initial.y(), marker='x', color='green')
-    # path_initial.optimize(path_initial, radius=radius, n=2, wetzel=False, coordinates=False)
+    plt.plot(path_initial.x(), path_initial.y(), linewidth=1, linestyle='dashed')
+    path_initial.optimize(path_initial, radius=radius, n=2, wetzel=True, coordinates=False)
+    # path_initial.remove_overlaping(radius, iterations=2)
     # path_initial.remove_straight_lines(iterations=3)
+
     path_final = plan_path_sec(path_initial)
 
-    c1 = Circle(Point(x=path_initial[1].start.x, y=path_initial[1].start.y), radius)
-    c2 = Circle(Point(x=path_initial[2].start.x, y=path_initial[2].start.y), radius)
-    p1, p2 = c1.intersection(c2)
-    print(p1)
-    print(p2)
-    plt.scatter(p1.x, p1.y, color='red', marker='x')
-    plt.scatter(p2.x, p2.y, color='red', marker='x')
+    # c1 = Circle(Point(x=path_initial[1].start.x, y=path_initial[1].start.y), radius)
+    # c2 = Circle(Point(x=path_initial[2].start.x, y=path_initial[2].start.y), radius)
+    # p1, p2, _ = c1.intersection(c2)
+    # print(p1)
+    # print(p2)
+    # plt.scatter(p1.x, p1.y, color='red', marker='x')
+    # plt.scatter(p2.x, p2.y, color='red', marker='x')
 
     if show_animation:
         plt.plot(path_initial.x(), path_initial.y(), linewidth=1)
         plt.plot(path_final.x(), path_final.y())
-        plt.scatter(path_initial.x(), path_initial.y(), color='red')
+        plt.scatter(path_initial.x(), path_initial.y(), color='red', marker='o')
 
         for i in range(len(path_initial)):
             circle = plt.Circle((path_initial[i].start.x, path_initial[i].start.y),
                                 radius, fill=False, linestyle='dashed')
             axes.set_aspect(1)
-            axes.autoscale()
+
             axes.add_artist(circle)
 
 
@@ -235,7 +285,7 @@ def main():
 
 if __name__ == '__main__':
 
-    test_intersection()
-    # test_circles()
+    # test_intersection()
+    test_circles()
     # main()
     # wetzel_test()

@@ -4,11 +4,13 @@ from math import sqrt
 class Point:
 
     def __init__(self, **kwargs):
+
         if kwargs.get('coords'):
             self._x, self._y = self.from_list(kwargs.get('coords'))
         else:
             self._x = kwargs.get('x')
             self._y = kwargs.get('y')
+        self.type = 'regular'
 
     def __str__(self):
         # return "x={self.x}, y={self.y}"
